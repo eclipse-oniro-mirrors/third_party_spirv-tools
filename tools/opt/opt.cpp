@@ -44,7 +44,7 @@ struct OptStatus {
 // initialization and setup. Note that |source| and |position| are irrelevant
 // here because we are still not processing a SPIR-V input file.
 void opt_diagnostic(spv_message_level_t level, const char* /*source*/,
-                    const spv_position_t& /*position*/, const char* message) {
+                    const spv_position_t& /*positon*/, const char* message) {
   if (level == SPV_MSG_ERROR) {
     fprintf(stderr, "error: ");
   }
@@ -59,7 +59,7 @@ std::string GetListOfPassesAsString(const spvtools::Optimizer& optimizer) {
   return ss.str();
 }
 
-const auto kDefaultEnvironment = SPV_ENV_UNIVERSAL_1_6;
+const auto kDefaultEnvironment = SPV_ENV_UNIVERSAL_1_5;
 
 std::string GetLegalizationPasses() {
   spvtools::Optimizer optimizer(kDefaultEnvironment);
@@ -157,20 +157,11 @@ Options (in lexicographical order):)",
                another.  It will only propagate an array if the source is never
                written to, and the only store to the target is the copy.)");
   printf(R"(
-  --replace-desc-array-access-using-var-index
-               Replaces accesses to descriptor arrays based on a variable index
-               with a switch that has a case for every possible value of the
-               index.)");
-  printf(R"(
-  --spread-volatile-semantics
-               Spread Volatile semantics to variables with SMIDNV, WarpIDNV,
-               SubgroupSize, SubgroupLocalInvocationId, SubgroupEqMask,
-               SubgroupGeMask, SubgroupGtMask, SubgroupLeMask, or SubgroupLtMask
-               BuiltIn decorations or OpLoad for them when the shader model is
-               ray generation, closest hit, miss, intersection, or callable.
-               For the SPIR-V version is 1.6 or above, it also spreads Volatile
-               semantics to a variable with HelperInvocation BuiltIn decoration
-               in the fragement shader.)");
+  --decompose-initialized-variables
+               Decomposes initialized variable declarations into a declaration
+               followed by a store of the initial value. This is done to work
+               around known issues with some Vulkan drivers for initialize
+               variables.)");
   printf(R"(
   --descriptor-scalar-replacement
                Replaces every array variable |desc| that has a DescriptorSet
@@ -202,10 +193,6 @@ Options (in lexicographical order):)",
                unused stores to vector components, that are not removed by
                aggressive dead code elimination.)");
   printf(R"(
-  --eliminate-dead-input-components
-               Deletes unused components from input variables. Currently
-               deletes trailing unused elements from input arrays.)");
-  printf(R"(
   --eliminate-dead-variables
                Deletes module scope variables that are not referenced.)");
   printf(R"(
@@ -230,10 +217,6 @@ Options (in lexicographical order):)",
                only stored once. Performed on variables referenceed only with
                loads and stores. Performed only on entry point call tree
                functions.)");
-  printf(R"(
-  --fix-func-call-param
-               fix non memory argument for the function call, replace 
-               accesschain pointer argument with a variable.)");
   printf(R"(
   --flatten-decorations
                Replace decoration groups with repeated OpDecorate and
@@ -404,12 +387,9 @@ Options (in lexicographical order):)",
                Change the scope of private variables that are used in a single
                function to that function.)");
   printf(R"(
-  --reduce-load-size[=<threshold>]
+  --reduce-load-size
                Replaces loads of composite objects where not every component is
-               used by loads of just the elements that are used.  If the ratio
-               of the used components of the load is less than the <threshold>,
-               we replace the load.  <threshold> is a double type number.  If
-               it is bigger than 1.0, we always replaces the load.)");
+               used by loads of just the elements that are used.)");
   printf(R"(
   --redundancy-elimination
                Looks for instructions in the same function that compute the
@@ -485,16 +465,16 @@ Options (in lexicographical order):)",
   --strength-reduction
                Replaces instructions with equivalent and less expensive ones.)");
   printf(R"(
+  --strip-atomic-counter-memory
+               Removes AtomicCountMemory bit from memory semantics values.)");
+  printf(R"(
   --strip-debug
                Remove all debug instructions.)");
   printf(R"(
-  --strip-nonsemantic
-               Remove all reflection and nonsemantic information.)");
-  printf(R"(
   --strip-reflect
-               DEPRECATED.  Remove all reflection information.  For now, this
-               covers reflection information defined by
-               SPV_GOOGLE_hlsl_functionality1 and SPV_KHR_non_semantic_info)");
+               Remove all reflection information.  For now, this covers
+               reflection information defined by SPV_GOOGLE_hlsl_functionality1
+               and SPV_KHR_non_semantic_info)");
   printf(R"(
   --target-env=<env>
                Set the target environment. Without this flag the target
