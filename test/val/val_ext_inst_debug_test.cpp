@@ -354,7 +354,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugSourceInFunction) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, "", "", dbg_inst,
@@ -436,7 +436,7 @@ TEST_P(ValidateLocalDebugInfoOutOfFunction, VulkanDebugInfo100DebugScope) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const std::string constants = R"(
@@ -738,7 +738,7 @@ INSTANTIATE_TEST_SUITE_P(OpenCLAndVkDebugInfo100, ValidateXDebugInfo,
 )",
                              R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )",
                          }));
 
@@ -798,7 +798,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugCompilationUnitFail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const std::string constants = R"(
@@ -872,7 +872,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeBasicFailName) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -941,7 +941,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeBasicFailSize) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1107,7 +1107,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeQualifier) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1141,7 +1141,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeQualifierFail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1398,7 +1398,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeArray) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1436,7 +1436,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayWithVariableSize) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1466,7 +1466,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayFailBaseType) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1499,7 +1499,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayFailComponentCount) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1534,7 +1534,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayFailComponentCountFloat) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1547,7 +1547,7 @@ OpExtension "SPV_KHR_non_semantic_info"
                         "integer scalar type"));
 }
 
-TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayComponentCountZero) {
+TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayFailComponentCountZero) {
   const std::string src = R"(
 %src = OpString "simple.hlsl"
 %code = OpString "main() {}"
@@ -1569,12 +1569,17 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayComponentCountZero) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
       src, constants, dbg_inst_header, "", extension, "Vertex"));
-  ASSERT_EQ(SPV_SUCCESS, ValidateInstructions());
+  ASSERT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions());
+  EXPECT_THAT(getDiagnosticString(),
+              HasSubstr("Component Count must be OpConstant with a 32- or "
+                        "64-bits integer scalar type or DebugGlobalVariable or "
+                        "DebugLocalVariable with a 32- or 64-bits unsigned "
+                        "integer scalar type"));
 }
 
 TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayFailVariableSizeTypeFloat) {
@@ -1605,7 +1610,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeArrayFailVariableSizeTypeFloat) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1757,7 +1762,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeVector) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1787,7 +1792,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeVectorFail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1820,7 +1825,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeVectorFailComponentZero) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1853,7 +1858,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeVectorFailComponentFive) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -1861,178 +1866,6 @@ OpExtension "SPV_KHR_non_semantic_info"
   ASSERT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions());
   EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Component Count must be positive "
-                        "integer less than or equal to 4"));
-}
-
-TEST_F(ValidateVulkan100DebugInfo, DebugTypeMatrix) {
-  const std::string src = R"(
-%src = OpString "simple.hlsl"
-%code = OpString "main() {}"
-%float_name = OpString "float"
-)";
-
-  const std::string constants = R"(
-%u32_4 = OpConstant %u32 4
-%u32_5 = OpConstant %u32 5
-%u32_32 = OpConstant %u32 32
-%true = OpConstantTrue %bool
-)";
-
-  const std::string dbg_inst_header = R"(
-%dbg_src = OpExtInst %void %DbgExt DebugSource %src %code
-%comp_unit = OpExtInst %void %DbgExt DebugCompilationUnit %u32_2 %u32_4 %dbg_src %u32_5
-%float_info = OpExtInst %void %DbgExt DebugTypeBasic %float_name %u32_32 %u32_3 %u32_0
-%vfloat_info = OpExtInst %void %DbgExt DebugTypeVector %float_info %u32_4
-%mfloat_info = OpExtInst %void %DbgExt DebugTypeMatrix %vfloat_info %u32_4 %true
-)";
-
-  const std::string extension = R"(
-OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
-)";
-
-  CompileSuccessfully(GenerateShaderCodeForDebugInfo(
-      src, constants, dbg_inst_header, "", extension, "Vertex"));
-  ASSERT_EQ(SPV_SUCCESS, ValidateInstructions());
-}
-
-TEST_F(ValidateVulkan100DebugInfo, DebugTypeMatrixFailVectorTypeType) {
-  const std::string src = R"(
-%src = OpString "simple.hlsl"
-%code = OpString "main() {}"
-%float_name = OpString "float"
-)";
-
-  const std::string constants = R"(
-%u32_4 = OpConstant %u32 4
-%u32_5 = OpConstant %u32 5
-%u32_32 = OpConstant %u32 32
-%true = OpConstantTrue %bool
-)";
-
-  const std::string dbg_inst_header = R"(
-%dbg_src = OpExtInst %void %DbgExt DebugSource %src %code
-%comp_unit = OpExtInst %void %DbgExt DebugCompilationUnit %u32_2 %u32_4 %dbg_src %u32_5
-%float_info = OpExtInst %void %DbgExt DebugTypeBasic %float_name %u32_32 %u32_3 %u32_0
-%vfloat_info = OpExtInst %void %DbgExt DebugTypeVector %float_info %u32_4
-%mfloat_info = OpExtInst %void %DbgExt DebugTypeMatrix %dbg_src %u32_4 %true
-)";
-
-  const std::string extension = R"(
-OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
-)";
-
-  CompileSuccessfully(GenerateShaderCodeForDebugInfo(
-      src, constants, dbg_inst_header, "", extension, "Vertex"));
-  ASSERT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions());
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr("expected operand Vector Type must be a result id of "
-                        "DebugTypeVector"));
-}
-
-TEST_F(ValidateVulkan100DebugInfo, DebugTypeMatrixFailVectorCountType) {
-  const std::string src = R"(
-%src = OpString "simple.hlsl"
-%code = OpString "main() {}"
-%float_name = OpString "float"
-)";
-
-  const std::string constants = R"(
-%u32_4 = OpConstant %u32 4
-%u32_5 = OpConstant %u32 5
-%u32_32 = OpConstant %u32 32
-%true = OpConstantTrue %bool
-)";
-
-  const std::string dbg_inst_header = R"(
-%dbg_src = OpExtInst %void %DbgExt DebugSource %src %code
-%comp_unit = OpExtInst %void %DbgExt DebugCompilationUnit %u32_2 %u32_4 %dbg_src %u32_5
-%float_info = OpExtInst %void %DbgExt DebugTypeBasic %float_name %u32_32 %u32_3 %u32_0
-%vfloat_info = OpExtInst %void %DbgExt DebugTypeVector %float_info %u32_4
-%mfloat_info = OpExtInst %void %DbgExt DebugTypeMatrix %vfloat_info %dbg_src %true
-)";
-
-  const std::string extension = R"(
-OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
-)";
-
-  CompileSuccessfully(GenerateShaderCodeForDebugInfo(
-      src, constants, dbg_inst_header, "", extension, "Vertex"));
-  ASSERT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions());
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr("expected operand Vector Count must be a result id of "
-                        "32-bit unsigned OpConstant"));
-}
-
-TEST_F(ValidateVulkan100DebugInfo, DebugTypeMatrixFailVectorCountZero) {
-  const std::string src = R"(
-%src = OpString "simple.hlsl"
-%code = OpString "main() {}"
-%float_name = OpString "float"
-)";
-
-  const std::string constants = R"(
-%u32_4 = OpConstant %u32 4
-%u32_5 = OpConstant %u32 5
-%u32_32 = OpConstant %u32 32
-%true = OpConstantTrue %bool
-)";
-
-  const std::string dbg_inst_header = R"(
-%dbg_src = OpExtInst %void %DbgExt DebugSource %src %code
-%comp_unit = OpExtInst %void %DbgExt DebugCompilationUnit %u32_2 %u32_4 %dbg_src %u32_5
-%float_info = OpExtInst %void %DbgExt DebugTypeBasic %float_name %u32_32 %u32_3 %u32_0
-%vfloat_info = OpExtInst %void %DbgExt DebugTypeVector %float_info %u32_4
-%mfloat_info = OpExtInst %void %DbgExt DebugTypeMatrix %vfloat_info %u32_0 %true
-)";
-
-  const std::string extension = R"(
-OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
-)";
-
-  CompileSuccessfully(GenerateShaderCodeForDebugInfo(
-      src, constants, dbg_inst_header, "", extension, "Vertex"));
-  ASSERT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions());
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr("Vector Count must be positive "
-                        "integer less than or equal to 4"));
-}
-
-TEST_F(ValidateVulkan100DebugInfo, DebugTypeMatrixFailVectorCountFive) {
-  const std::string src = R"(
-%src = OpString "simple.hlsl"
-%code = OpString "main() {}"
-%float_name = OpString "float"
-)";
-
-  const std::string constants = R"(
-%u32_4 = OpConstant %u32 4
-%u32_5 = OpConstant %u32 5
-%u32_32 = OpConstant %u32 32
-%true = OpConstantTrue %bool
-)";
-
-  const std::string dbg_inst_header = R"(
-%dbg_src = OpExtInst %void %DbgExt DebugSource %src %code
-%comp_unit = OpExtInst %void %DbgExt DebugCompilationUnit %u32_2 %u32_4 %dbg_src %u32_5
-%float_info = OpExtInst %void %DbgExt DebugTypeBasic %float_name %u32_32 %u32_3 %u32_0
-%vfloat_info = OpExtInst %void %DbgExt DebugTypeVector %float_info %u32_4
-%mfloat_info = OpExtInst %void %DbgExt DebugTypeMatrix %vfloat_info %u32_5 %true
-)";
-
-  const std::string extension = R"(
-OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
-)";
-
-  CompileSuccessfully(GenerateShaderCodeForDebugInfo(
-      src, constants, dbg_inst_header, "", extension, "Vertex"));
-  ASSERT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions());
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr("Vector Count must be positive "
                         "integer less than or equal to 4"));
 }
 
@@ -2134,7 +1967,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypedef) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -2168,7 +2001,7 @@ TEST_P(ValidateVulkan100DebugInfoDebugTypedef, Fail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -2319,7 +2152,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeFunctionAndParams) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -2351,7 +2184,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeFunctionFailReturn) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -2386,7 +2219,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeFunctionFailParam) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -2516,7 +2349,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugTypeEnum) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -2550,7 +2383,7 @@ TEST_P(ValidateVulkan100DebugInfoDebugTypeEnum, Fail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -2872,7 +2705,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -2920,7 +2753,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -2989,7 +2822,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -3196,7 +3029,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -3236,7 +3069,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -3300,7 +3133,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -3457,7 +3290,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugLexicalBlock) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -3488,7 +3321,7 @@ TEST_P(ValidateVulkan100DebugInfoDebugLexicalBlock, Fail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -3530,7 +3363,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugScopeFailScope) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -3561,7 +3394,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugScopeFailInlinedAt) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -3672,7 +3505,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugLocalVariable) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -3707,7 +3540,7 @@ TEST_P(ValidateVulkan100DebugInfoDebugLocalVariable, Fail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -3903,7 +3736,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugDeclare) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const std::string body = R"(
@@ -3920,7 +3753,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugDeclareParam) {
   CompileSuccessfully(R"(
                OpCapability Shader
                OpExtension "SPV_KHR_non_semantic_info"
-          %1 = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+          %1 = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
                OpMemoryModel Logical GLSL450
                OpEntryPoint Vertex %main "main" %in_var_COLOR
           %4 = OpString "test.hlsl"
@@ -4010,7 +3843,7 @@ TEST_P(ValidateVulkan100DebugInfoDebugDeclare, Fail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const auto& param = GetParam();
@@ -4080,7 +3913,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugExpression) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo("", "", dbg_inst_header,
@@ -4096,7 +3929,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugExpressionFail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo("", "", dbg_inst_header,
@@ -4326,7 +4159,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4365,7 +4198,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4404,7 +4237,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4441,7 +4274,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4482,7 +4315,7 @@ main() {}
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4689,7 +4522,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugGlobalVariable) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4722,7 +4555,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugGlobalVariableStaticMember) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4754,7 +4587,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugGlobalVariableDebugInfoNone) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4785,7 +4618,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugGlobalVariableConst) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(
@@ -4819,7 +4652,7 @@ TEST_P(ValidateVulkan100DebugInfoDebugGlobalVariable, Fail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   CompileSuccessfully(GenerateShaderCodeForDebugInfo(src, constants, ss.str(),
@@ -4973,7 +4806,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugInlinedAt) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const std::string body = R"(
@@ -5011,7 +4844,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugInlinedAtFail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const std::string body = R"(
@@ -5050,7 +4883,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugInlinedAtFail2) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const std::string body = R"(
@@ -5209,7 +5042,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugValue) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const std::string body = R"(
@@ -5251,7 +5084,7 @@ TEST_F(ValidateVulkan100DebugInfo, DebugValueWithVariableIndex) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const std::string body = R"(
@@ -5289,7 +5122,7 @@ TEST_P(ValidateVulkan100DebugInfoDebugValue, Fail) {
 
   const std::string extension = R"(
 OpExtension "SPV_KHR_non_semantic_info"
-%DbgExt = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+%DbgExt = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
 )";
 
   const auto& param = GetParam();
@@ -5320,7 +5153,7 @@ TEST_F(ValidateVulkan100DebugInfo, VulkanDebugInfoSample) {
   ss << R"(
                OpCapability Shader
                OpExtension "SPV_KHR_non_semantic_info"
-          %id_1 = OpExtInstImport "NonSemantic.Shader.DebugInfo.100"
+          %id_1 = OpExtInstImport "NonSemantic.Vulkan.DebugInfo.100"
                OpMemoryModel Logical GLSL450
                OpEntryPoint Fragment %id_MainPs "MainPs" %id_in_var_TEXCOORD2 %id_out_var_SV_Target0
                OpExecutionMode %id_MainPs OriginUpperLeft

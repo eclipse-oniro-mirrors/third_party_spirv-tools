@@ -185,7 +185,6 @@ add_spvtools_unittest(
 endif()
 
 
-add_subdirectory(diff)
 add_subdirectory(link)
 add_subdirectory(lint)
 add_subdirectory(opt)

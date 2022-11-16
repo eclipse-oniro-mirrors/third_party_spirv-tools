@@ -20,7 +20,7 @@ bazel-bin
 bazel-genfiles
 bazel-out
 bazel-spirv-tools
-bazel-SPIRV-Tools
+bazel-spirv-tools
 bazel-testlogs
 
 # Vim

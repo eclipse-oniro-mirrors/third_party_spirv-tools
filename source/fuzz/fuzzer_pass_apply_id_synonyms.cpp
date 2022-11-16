@@ -198,7 +198,7 @@ bool FuzzerPassApplyIdSynonyms::DataDescriptorsHaveCompatibleTypes(
       GetIRContext(), base_object_type_id_2, dd2.index());
   assert(type_id_1 && type_id_2 && "Data descriptors have invalid types");
 
-  return fuzzerutil::TypesAreCompatible(
+  return TransformationReplaceIdWithSynonym::TypesAreCompatible(
       GetIRContext(), opcode, use_in_operand_index, type_id_1, type_id_2);
 }
 
