@@ -47,7 +47,7 @@ struct spv_validator_options_t {
         scalar_block_layout(false),
         workgroup_scalar_block_layout(false),
         skip_block_layout(false),
-        allow_localsizeid(false),
+	allow_localsizeid(false),
         before_hlsl_legalization(false) {}
 
   validator_universal_limits_t universal_limits_;

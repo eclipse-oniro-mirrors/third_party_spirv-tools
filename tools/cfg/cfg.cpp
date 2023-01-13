@@ -69,16 +69,16 @@ int main(int argc, char** argv) {
           if (0 == strcmp(argv[argi], "--help")) {
             print_usage(argv[0]);
             return 0;
-          }
-          if (0 == strcmp(argv[argi], "--version")) {
+          } else if (0 == strcmp(argv[argi], "--version")) {
             printf("%s EXPERIMENTAL\n", spvSoftwareVersionDetailsString());
             printf("Target: %s\n",
                    spvTargetEnvDescription(kDefaultEnvironment));
             return 0;
+          } else {
+            print_usage(argv[0]);
+            return 1;
           }
-          print_usage(argv[0]);
-          return 1;
-        }
+        } break;
         case 0: {
           // Setting a filename of "-" to indicate stdin.
           if (!inFile) {

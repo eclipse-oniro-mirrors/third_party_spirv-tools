@@ -45,11 +45,10 @@ FuzzerPassDonateModules::FuzzerPassDonateModules(
     opt::IRContext* ir_context, TransformationContext* transformation_context,
     FuzzerContext* fuzzer_context,
     protobufs::TransformationSequence* transformations,
-    bool ignore_inapplicable_transformations,
-    std::vector<fuzzerutil::ModuleSupplier> donor_suppliers)
+    const std::vector<fuzzerutil::ModuleSupplier>& donor_suppliers)
     : FuzzerPass(ir_context, transformation_context, fuzzer_context,
-                 transformations, ignore_inapplicable_transformations),
-      donor_suppliers_(std::move(donor_suppliers)) {}
+                 transformations),
+      donor_suppliers_(donor_suppliers) {}
 
 void FuzzerPassDonateModules::Apply() {
   // If there are no donor suppliers, this fuzzer pass is a no-op.
