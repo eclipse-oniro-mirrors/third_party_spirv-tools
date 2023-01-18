@@ -412,15 +412,13 @@ func (s *server) Formatting(ctx context.Context, p *lsp.DocumentFormattingParams
 			}
 		}
 
-		formatted := sb.String()
-
-		// Every good file ends with a single new line.
-		formatted = strings.TrimRight(formatted, "\n") + "\n"
+		// Every good file ends with a new line.
+		sb.WriteString("\n")
 
 		return []lsp.TextEdit{
-			{
+			lsp.TextEdit{
 				Range:   rangeToLSP(f.fullRange),
-				NewText: formatted,
+				NewText: sb.String(),
 			},
 		}, nil
 	}
