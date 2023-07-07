@@ -147,6 +147,6 @@ ohos_source_set("deqp_spirvtool_source") {
 
 ohos_static_library("libdeqp_spirvtools") {
   deps = [ ":deqp_spirvtool_source" ]
-  part_name = "graphic_standard"
+  part_name = "graphic_2d"
   subsystem_name = "graphic"
 }
