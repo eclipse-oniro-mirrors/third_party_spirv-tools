@@ -34,6 +34,7 @@ ohos_source_set("deqp_spirvtool_link_source") {
     "//third_party/spirv-tools",
     "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools",
     "//third_party/spirv-headers/include",
+    "//third_party/spirv-headers/include/spirv/unified1",
     "//third_party/spirv-tools/include",
   ]
 

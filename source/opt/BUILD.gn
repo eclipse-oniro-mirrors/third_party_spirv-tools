@@ -44,7 +44,6 @@ ohos_source_set("deqp_spirvtool_opt_source") {
     "//third_party/spirv-tools/source/opt/constants.cpp",
     "//third_party/spirv-tools/source/opt/control_dependence.cpp",
 
-    #"//third_party/spirv-tools/source/opt/convert_to_sampled_image_pass.cpp",
     "//third_party/spirv-tools/source/opt/convert_to_half_pass.cpp",
     "//third_party/spirv-tools/source/opt/copy_prop_arrays.cpp",
     "//third_party/spirv-tools/source/opt/dataflow.cpp",
@@ -112,7 +111,6 @@ ohos_source_set("deqp_spirvtool_opt_source") {
     "//third_party/spirv-tools/source/opt/relax_float_ops_pass.cpp",
     "//third_party/spirv-tools/source/opt/remove_duplicates_pass.cpp",
 
-    #"//third_party/spirv-tools/source/opt/remove_unused_interface_variables_pass.cpp",
     "//third_party/spirv-tools/source/opt/replace_invalid_opc.cpp",
     "//third_party/spirv-tools/source/opt/scalar_analysis.cpp",
     "//third_party/spirv-tools/source/opt/scalar_analysis_simplification.cpp",
@@ -122,7 +120,7 @@ ohos_source_set("deqp_spirvtool_opt_source") {
     "//third_party/spirv-tools/source/opt/ssa_rewrite_pass.cpp",
     "//third_party/spirv-tools/source/opt/strength_reduction_pass.cpp",
     "//third_party/spirv-tools/source/opt/strip_debug_info_pass.cpp",
-    "//third_party/spirv-tools/source/opt/strip_reflect_info_pass.cpp",
+    "//third_party/spirv-tools/source/opt/strip_nonsemantic_info_pass.cpp",
     "//third_party/spirv-tools/source/opt/struct_cfg_analysis.cpp",
     "//third_party/spirv-tools/source/opt/type_manager.cpp",
     "//third_party/spirv-tools/source/opt/types.cpp",
@@ -132,6 +130,17 @@ ohos_source_set("deqp_spirvtool_opt_source") {
     "//third_party/spirv-tools/source/opt/vector_dce.cpp",
     "//third_party/spirv-tools/source/opt/workaround1209.cpp",
     "//third_party/spirv-tools/source/opt/wrap_opkill.cpp",
+    "//third_party/spirv-tools/source/opt/fix_func_call_arguments.cpp",
+  
+    "//third_party/spirv-tools/source/opt/convert_to_sampled_image_pass.cpp",
+    "//third_party/spirv-tools/source/opt/desc_sroa_util.cpp",
+    "//third_party/spirv-tools/source/opt/eliminate_dead_input_components_pass.cpp",
+    "//third_party/spirv-tools/source/opt/interface_var_sroa.cpp",
+    "//third_party/spirv-tools/source/opt/remove_dontinline_pass.cpp",
+    "//third_party/spirv-tools/source/opt/remove_unused_interface_variables_pass.cpp",
+    "//third_party/spirv-tools/source/opt/replace_desc_array_access_using_var_index.cpp",
+    "//third_party/spirv-tools/source/opt/spread_volatile_semantics.cpp",
+
   ]
 
   include_dirs = deqp_common_include_dirs
@@ -139,6 +148,7 @@ ohos_source_set("deqp_spirvtool_opt_source") {
     "//third_party/spirv-tools",
     "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools",
     "//third_party/spirv-headers/include",
+    "//third_party/spirv-headers/include/spirv/unified1",
     "//third_party/spirv-tools/include",
   ]
 

@@ -28,16 +28,16 @@ config("spv_headers_public_config") {
 
 source_set("spv_headers") {
   sources = [
-    "include/spirv/1.2/GLSL.std.450.h",
-    "include/spirv/1.2/OpenCL.std.h",
-    "include/spirv/1.2/spirv.h",
-    "include/spirv/1.2/spirv.hpp",
-    "include/spirv/unified1/GLSL.std.450.h",
-    "include/spirv/unified1/NonSemanticClspvReflection.h",
-    "include/spirv/unified1/NonSemanticDebugPrintf.h",
-    "include/spirv/unified1/OpenCL.std.h",
-    "include/spirv/unified1/spirv.h",
-    "include/spirv/unified1/spirv.hpp",
+    #"include/spirv/1.2/GLSL.std.450.h",
+    #"include/spirv/1.2/OpenCL.std.h",
+    #"include/spirv/1.2/spirv.h",
+    #"include/spirv/1.2/spirv.hpp",
+    #"include/spirv/unified1/GLSL.std.450.h",
+    #"include/spirv/unified1/NonSemanticClspvReflection.h",
+    #"include/spirv/unified1/NonSemanticDebugPrintf.h",
+    #"include/spirv/unified1/OpenCL.std.h",
+    #"include/spirv/unified1/spirv.h",
+    #"include/spirv/unified1/spirv.hpp",
   ]
 
   public_configs = [ ":spv_headers_public_config" ]
@@ -132,6 +132,9 @@ ohos_source_set("deqp_spirvtool_source") {
     "//third_party/spirv-tools/source/val/validate_small_type_uses.cpp",
     "//third_party/spirv-tools/source/val/validate_type.cpp",
     "//third_party/spirv-tools/source/val/validation_state.cpp",
+    "//third_party/spirv-tools/source/val/validate_mesh_shading.cpp",
+    "//third_party/spirv-tools/source/val/validate_ray_query.cpp",
+    "//third_party/spirv-tools/source/val/validate_ray_tracing.cpp",
   ]
 
   include_dirs = deqp_common_include_dirs

@@ -30,6 +30,7 @@ ohos_source_set("deqp_spirvtool_lint_source") {
   sources = [
     "//third_party/spirv-tools/source/lint/divergence_analysis.cpp",
     "//third_party/spirv-tools/source/lint/linter.cpp",
+    "//third_party/spirv-tools/source/lint/lint_divergent_derivatives.cpp",
   ]
 
   include_dirs = deqp_common_include_dirs
@@ -37,6 +38,7 @@ ohos_source_set("deqp_spirvtool_lint_source") {
     "//third_party/spirv-tools",
     "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools",
     "//third_party/spirv-headers/include",
+    "//third_party/spirv-headers/include/spirv/unified1",
     "//third_party/spirv-tools/include",
   ]
 

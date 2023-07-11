@@ -30,8 +30,6 @@ ohos_source_set("deqp_spirvtool_reduce_source") {
   sources = [
     "//third_party/spirv-tools/source/reduce/change_operand_reduction_opportunity.cpp",
     "//third_party/spirv-tools/source/reduce/change_operand_to_undef_reduction_opportunity.cpp",
-    "//third_party/spirv-tools/source/reduce/conditional_branch_to_simple_conditional_branch_opportunity_finder.cpp",
-    "//third_party/spirv-tools/source/reduce/conditional_branch_to_simple_conditional_branch_reduction_opportunity.cpp",
     "//third_party/spirv-tools/source/reduce/merge_blocks_reduction_opportunity.cpp",
     "//third_party/spirv-tools/source/reduce/merge_blocks_reduction_opportunity_finder.cpp",
     "//third_party/spirv-tools/source/reduce/operand_to_const_reduction_opportunity_finder.cpp",
@@ -54,9 +52,10 @@ ohos_source_set("deqp_spirvtool_reduce_source") {
     "//third_party/spirv-tools/source/reduce/remove_unused_struct_member_reduction_opportunity_finder.cpp",
     "//third_party/spirv-tools/source/reduce/simple_conditional_branch_to_branch_opportunity_finder.cpp",
     "//third_party/spirv-tools/source/reduce/simple_conditional_branch_to_branch_reduction_opportunity.cpp",
-
-    #"//third_party/spirv-tools/source/reduce/structured_construct_to_block_reduction_opportunity.cpp",
-    #"//third_party/spirv-tools/source/reduce/structured_construct_to_block_reduction_opportunity_finder.cpp",
+    "//third_party/spirv-tools/source/reduce/conditional_branch_to_simple_conditional_branch_opportunity_finder.cpp",
+    "//third_party/spirv-tools/source/reduce/conditional_branch_to_simple_conditional_branch_reduction_opportunity.cpp",
+    "//third_party/spirv-tools/source/reduce/structured_construct_to_block_reduction_opportunity.cpp",
+    "//third_party/spirv-tools/source/reduce/structured_construct_to_block_reduction_opportunity_finder.cpp",
     "//third_party/spirv-tools/source/reduce/structured_loop_to_selection_reduction_opportunity.cpp",
     "//third_party/spirv-tools/source/reduce/structured_loop_to_selection_reduction_opportunity_finder.cpp",
   ]
