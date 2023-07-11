@@ -124,17 +124,17 @@ ohos_source_set("deqp_spirvtool_source") {
     "//third_party/spirv-tools/source/val/validate_logicals.cpp",
     "//third_party/spirv-tools/source/val/validate_memory.cpp",
     "//third_party/spirv-tools/source/val/validate_memory_semantics.cpp",
+    "//third_party/spirv-tools/source/val/validate_mesh_shading.cpp",
     "//third_party/spirv-tools/source/val/validate_misc.cpp",
     "//third_party/spirv-tools/source/val/validate_mode_setting.cpp",
     "//third_party/spirv-tools/source/val/validate_non_uniform.cpp",
     "//third_party/spirv-tools/source/val/validate_primitives.cpp",
+    "//third_party/spirv-tools/source/val/validate_ray_query.cpp",
+    "//third_party/spirv-tools/source/val/validate_ray_tracing.cpp",
     "//third_party/spirv-tools/source/val/validate_scopes.cpp",
     "//third_party/spirv-tools/source/val/validate_small_type_uses.cpp",
     "//third_party/spirv-tools/source/val/validate_type.cpp",
     "//third_party/spirv-tools/source/val/validation_state.cpp",
-    "//third_party/spirv-tools/source/val/validate_mesh_shading.cpp",
-    "//third_party/spirv-tools/source/val/validate_ray_query.cpp",
-    "//third_party/spirv-tools/source/val/validate_ray_tracing.cpp",
   ]
 
   include_dirs = deqp_common_include_dirs
