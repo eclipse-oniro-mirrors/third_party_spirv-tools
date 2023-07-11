@@ -29,8 +29,8 @@ config("deqp_spirvtool_lint_config") {
 ohos_source_set("deqp_spirvtool_lint_source") {
   sources = [
     "//third_party/spirv-tools/source/lint/divergence_analysis.cpp",
-    "//third_party/spirv-tools/source/lint/linter.cpp",
     "//third_party/spirv-tools/source/lint/lint_divergent_derivatives.cpp",
+    "//third_party/spirv-tools/source/lint/linter.cpp",
   ]
 
   include_dirs = deqp_common_include_dirs
