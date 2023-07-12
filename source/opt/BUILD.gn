@@ -150,6 +150,6 @@ ohos_static_library("libdeqp_spirvtools-opt") {
     ":deqp_spirvtool_opt_source",
     "//third_party/spirv-tools:libdeqp_spirvtools",
   ]
-  part_name = "graphic_standard"
+  part_name = "graphic_2d"
   subsystem_name = "graphic"
 }
