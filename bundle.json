@@ -1,0 +1,34 @@
+{
+    "name": "@ohos/libdeqp_spirvtools",
+    "description": "This repository contains libdeqp_spirvtools for Khronos Conformance Testing Suite.",
+    "version": "v2021.1",
+    "license": "3-Clause BSD License",
+    "publishAs": "code-segment",
+    "segment": {
+        "destPath": "third_party/spirv-tools"
+    },
+    "dirs": {},
+    "scripts": {},
+    "licensePath": "LICENSE",
+    "readmePath": {
+        "en": "README"
+    },
+    "component": {
+        "name": "libdeqp_spirvtools",
+        "subsystem": "thirdparty",
+        "syscap": [],
+        "features": [],
+        "adapted_system_type": ["standard"],
+        "rom": "100KB",
+        "ram": "100KB",
+        "deps": {
+            "components": [],
+            "third_party": []
+        },
+        "build": {
+            "sub_component": [],
+            "inner_kits": [],
+            "test": []
+        }
+    }
+}
