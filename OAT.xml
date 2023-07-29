@@ -57,9 +57,16 @@ Note:If the text contains special characters, please escape them according to th
 <configuration>
     <oatconfig>
         <licensefile>COPYING</licensefile>
+        <policylist>
+            <policy name="projectPolicy" desc="">
+                <policyitem type="compatibility" name="Khronos License" path="BUILD.gn" desc="宽松型许可证，实际兼容"/>
+                <policyitem type="compatibility" name="Khronos License" path="include/spirv/.*" desc="宽松型许可证，实际兼容"/>
+                <policyitem type="compatibility" name="Khronos License" path="tools/sva/src/spirv.data.js	" desc="宽松型许可证，实际兼容"/>
+            </policy>
+        </policylist>
+
         <filefilterlist>
             <filefilter name="defaultFilter" desc="Files not to check">
-                <filteritem type="filepath" name=".*" desc="third party"/>
             </filefilter>
             <filefilter name="defaultPolicyFilter" desc="Filters for compatibility，license header policies">
                 <filteritem type="filename" name="README.OpenSource"/>
@@ -68,6 +75,7 @@ Note:If the text contains special characters, please escape them according to th
                 <filteritem type="filename" name="doxygen.ini.in"  desc="not used in ohos"/>
                 <filteritem type="filename" name="COPYING"  desc="data/COPYING not used in ohos"/>
                 <filteritem type="filename" name="DCO-1.1.txt"  desc="not used in ohos"/>
+                <filteritem type="filename" name="BUILD.bazel"  desc="构建文件"/>
             </filefilter>
             <filefilter name="copyrightPolicyFilter" desc="Filters for copyright header policies" >
                 <filteritem type="filename" name="README.OpenSource"/>
@@ -75,6 +83,7 @@ Note:If the text contains special characters, please escape them according to th
             </filefilter>
             <filefilter name="binaryFileTypePolicyFilter" desc="Filters for binary file policies">
                 <filteritem type="filename" name="*.bmp|*.png|*.jpg" desc="binary not used and belonged to weston"/>
+                <filteritem type="filepath" name="test/fuzzers/corpora/spv/simple.spv" desc="上游原生二进制"/>
             </filefilter>
         </filefilterlist>
     </oatconfig>
