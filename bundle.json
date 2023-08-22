@@ -1,7 +1,7 @@
 {
-    "name": "@ohos/libdeqp_spirvtools",
+    "name": "@ohos/spirv-tools",
     "description": "This repository contains libdeqp_spirvtools for Khronos Conformance Testing Suite.",
-    "version": "v2021.1",
+    "version": "3.2",
     "license": "3-Clause BSD License",
     "publishAs": "code-segment",
     "segment": {
