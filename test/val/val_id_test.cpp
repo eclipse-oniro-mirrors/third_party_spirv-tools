@@ -203,11 +203,12 @@ std::string ValidateIdWithMessage::make_message(const char* msg) {
     // Parse 'num[%name]'
     size_t open_quote = message.find('\'', next);
 
-    // Copy up to the first quote
-    result.write(msg + next, open_quote - next);
     if (open_quote == std::string::npos) {
       break;
     }
+
+    // Copy up to the first quote
+    result.write(msg + next, open_quote - next);
     // Handle apostrophes
     if (!isdigit(message[open_quote + 1])) {
       result << '\'';
@@ -2316,7 +2317,7 @@ OpFunctionEnd
           "be used with non-externally visible shader Storage Classes: "
           "Workgroup, CrossWorkgroup, Private, Function, Input, Output, "
           "RayPayloadKHR, IncomingRayPayloadKHR, HitAttributeKHR, "
-          "CallableDataKHR, or IncomingCallableDataKHR")));
+          "CallableDataKHR, IncomingCallableDataKHR, or UniformConstant")));
 }
 
 TEST_P(ValidateIdWithMessage, OpVariableContainsBoolPrivateGood) {
@@ -2326,6 +2327,25 @@ TEST_P(ValidateIdWithMessage, OpVariableContainsBoolPrivateGood) {
 %block = OpTypeStruct %bool %int
 %_ptr_Private_block = OpTypePointer Private %block
 %var = OpVariable %_ptr_Private_block Private
+%void = OpTypeVoid
+%fnty = OpTypeFunction %void
+%main = OpFunction %void None %fnty
+%entry = OpLabel
+%load = OpLoad %block %var
+OpReturn
+OpFunctionEnd
+)";
+  CompileSuccessfully(spirv.c_str());
+  EXPECT_EQ(SPV_SUCCESS, ValidateInstructions());
+}
+
+TEST_P(ValidateIdWithMessage, OpVariableContainsBoolUniformConstantGood) {
+  std::string spirv = kGLSL450MemoryModel + R"(
+%bool = OpTypeBool
+%int = OpTypeInt 32 0
+%block = OpTypeStruct %bool %int
+%_ptr_UniformConstant_block = OpTypePointer UniformConstant %block
+%var = OpVariable %_ptr_UniformConstant_block UniformConstant
 %void = OpTypeVoid
 %fnty = OpTypeFunction %void
 %main = OpFunction %void None %fnty
@@ -3981,8 +4001,11 @@ OpFunctionEnd
 TEST_P(AccessChainInstructionTest, AccessChainTooManyIndexesGood) {
   const std::string instr = GetParam();
   const std::string elem = AccessChainRequiresElemId(instr) ? " %int_0 " : "";
+  const std::string arrayStride =
+      " OpDecorate %_ptr_Uniform_deep_struct ArrayStride 8 ";
   int depth = 255;
-  std::string header = kGLSL450MemoryModel + kDeeplyNestedStructureSetup;
+  std::string header =
+      kGLSL450MemoryModel + arrayStride + kDeeplyNestedStructureSetup;
   header.erase(header.find("%func"));
   std::ostringstream spirv;
   spirv << header << "\n";
@@ -4044,8 +4067,11 @@ TEST_P(AccessChainInstructionTest, AccessChainTooManyIndexesBad) {
 TEST_P(AccessChainInstructionTest, CustomizedAccessChainTooManyIndexesGood) {
   const std::string instr = GetParam();
   const std::string elem = AccessChainRequiresElemId(instr) ? " %int_0 " : "";
+  const std::string arrayStride =
+      " OpDecorate %_ptr_Uniform_deep_struct ArrayStride 8 ";
   int depth = 10;
-  std::string header = kGLSL450MemoryModel + kDeeplyNestedStructureSetup;
+  std::string header =
+      kGLSL450MemoryModel + arrayStride + kDeeplyNestedStructureSetup;
   header.erase(header.find("%func"));
   std::ostringstream spirv;
   spirv << header << "\n";
@@ -4217,8 +4243,11 @@ TEST_P(AccessChainInstructionTest, AccessChainIndexIntoAllTypesGood) {
   // 0 will select the element at the index 0 of the vector. (which is a float).
   const std::string instr = GetParam();
   const std::string elem = AccessChainRequiresElemId(instr) ? "%int_0 " : "";
+  const std::string arrayStride =
+      " OpDecorate %_ptr_Uniform_blockName ArrayStride 8 ";
   std::ostringstream spirv;
-  spirv << kGLSL450MemoryModel << kDeeplyNestedStructureSetup << std::endl;
+  spirv << kGLSL450MemoryModel << arrayStride << kDeeplyNestedStructureSetup
+        << std::endl;
   spirv << "%ss = " << instr << " %_ptr_Uniform_struct_s %blockName_var "
         << elem << "%int_0" << std::endl;
   spirv << "%sa = " << instr << " %_ptr_Uniform_array5_mat4x3 %blockName_var "
@@ -4241,9 +4270,12 @@ OpFunctionEnd
 TEST_P(AccessChainInstructionTest, AccessChainIndexIntoRuntimeArrayGood) {
   const std::string instr = GetParam();
   const std::string elem = AccessChainRequiresElemId(instr) ? "%int_0 " : "";
-  std::string spirv = kGLSL450MemoryModel + kDeeplyNestedStructureSetup + R"(
-%runtime_arr_entry = )" +
-                      instr + R"( %_ptr_Uniform_float %blockName_var )" + elem +
+  const std::string arrayStride =
+      " OpDecorate %_ptr_Uniform_blockName ArrayStride 8 ";
+  std::string spirv = kGLSL450MemoryModel + arrayStride +
+                      kDeeplyNestedStructureSetup + R"(
+%runtime_arr_entry = )" + instr +
+                      R"( %_ptr_Uniform_float %blockName_var )" + elem +
                       R"(%int_2 %int_0
 OpReturn
 OpFunctionEnd
@@ -5631,6 +5663,7 @@ TEST_P(ValidateIdWithMessage, StgBufOpPtrAccessChainGood) {
      OpExtension "SPV_KHR_variable_pointers"
      OpMemoryModel Logical GLSL450
      OpEntryPoint GLCompute %3 ""
+     OpDecorate %ptr ArrayStride 8
 %int = OpTypeInt 32 0
 %int_2 = OpConstant %int 2
 %int_4 = OpConstant %int 4
