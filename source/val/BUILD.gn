@@ -152,6 +152,6 @@ ohos_static_library("libdeqp_spirvtools-val") {
     ":deqp_spirvtool_val_source",
     "//third_party/spirv-tools:libdeqp_spirvtools",
   ]
-  part_name = "graphic_2d"
-  subsystem_name = "graphic"
+  part_name = "acts"
+  subsystem_name = "xts"
 }
