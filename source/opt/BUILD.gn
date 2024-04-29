@@ -323,14 +323,14 @@ ohos_source_set("deqp_spirvtool_opt_source") {
     "//third_party/spirv-headers/include",
     "//third_party/spirv-headers/include/spirv/unified1",
     "//third_party/spirv-tools/include",
-    "//third_party/spirv-tools/source/util"
+    "//third_party/spirv-tools/source/util",
   ]
 
   if (build_with_chromium) {
     configs -= [ "//build/config/compiler:chromium_code" ]
     configs += [ "//build/config/compiler:no_chromium_code" ]
   }
-  
+
   configs = [ ":deqp_spirvtool_opt_config" ]
   configs += [ ":spv_headers_public_config" ]
   configs += [ ":spvtools_internal_config" ]

@@ -75,7 +75,7 @@ ohos_source_set("deqp_spirvtool_link_source") {
     "//third_party/spirv-tools/include/spirv-tools/libspirv.hpp",
     "//third_party/spirv-tools/include/spirv-tools/linker.hpp",
     "//third_party/spirv-tools/include/spirv-tools/optimizer.hpp",
-    "//third_party/spirv-tools/source/link/linker.cpp" 
+    "//third_party/spirv-tools/source/link/linker.cpp",
   ]
 
   include_dirs = deqp_common_include_dirs
