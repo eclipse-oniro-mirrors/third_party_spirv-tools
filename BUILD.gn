@@ -32,8 +32,11 @@ if (build_with_chromium) {
 # SPIRV-Tools may be part of multiple projects in the Chromium tree.
 # Only enable building executables if this is the main copy.
 abspath = get_path_info(".", "abspath")
-spvtools_chromium_third_party = (abspath == "//third_party/vulkan-deps/spirv-tools/src/")
-spvtools_build_executables = build_with_chromium && spvtools_chromium_third_party
+spvtools_chromium_third_party =
+    abspath == "//third_party/vulkan-deps/spirv-tools/src/"
+spvtools_build_executables =
+    build_with_chromium && spvtools_chromium_third_party
+
 # Fuchsia also requires building the executables.
 # TODO(b/158002593): Avoid the use of dependent-specific variables.
 if (defined(is_fuchsia_tree) && is_fuchsia_tree) {
@@ -88,12 +91,10 @@ template("spvtools_core_tables") {
 
     version = invoker.version
 
-    core_json_file =
-        "//third_party/spirv-headers/include/spirv/$version/spirv.core.grammar.json"
+    core_json_file = "//third_party/spirv-headers/include/spirv/$version/spirv.core.grammar.json"
     core_insts_file = "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools/core.insts-$version.inc"
     operand_kinds_file = "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools/operand.kinds-$version.inc"
-    debuginfo_insts_file =
-        "//third_party/spirv-headers/include/spirv/unified1/extinst.debuginfo.grammar.json"
+    debuginfo_insts_file = "//third_party/spirv-headers/include/spirv/unified1/extinst.debuginfo.grammar.json"
     cldebuginfo100_insts_file = "//third_party/spirv-headers/include/spirv/unified1/extinst.opencl.debuginfo.100.grammar.json"
 
     sources = [
@@ -117,7 +118,7 @@ template("spvtools_core_tables") {
       "--operand-kinds-output",
       rebase_path(operand_kinds_file, root_build_dir),
       "--output-language",
-      "c++"
+      "c++",
     ]
   }
 }
@@ -130,10 +131,8 @@ template("spvtools_core_enums") {
 
     version = invoker.version
 
-    core_json_file =
-        "//third_party/spirv-headers/include/spirv/$version/spirv.core.grammar.json"
-    debuginfo_insts_file =
-        "//third_party/spirv-headers/include/spirv/unified1/extinst.debuginfo.grammar.json"
+    core_json_file = "//third_party/spirv-headers/include/spirv/$version/spirv.core.grammar.json"
+    debuginfo_insts_file = "//third_party/spirv-headers/include/spirv/unified1/extinst.debuginfo.grammar.json"
     cldebuginfo100_insts_file = "//third_party/spirv-headers/include/spirv/unified1/extinst.opencl.debuginfo.100.grammar.json"
 
     extension_enum_file = "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools/extension_enum.inc"
@@ -151,7 +150,7 @@ template("spvtools_core_enums") {
       "--enum-string-mapping-output",
       rebase_path(extension_map_file, root_build_dir),
       "--output-language",
-      "c++"
+      "c++",
     ]
     inputs = [
       core_json_file,
@@ -173,11 +172,9 @@ template("spvtools_glsl_tables") {
 
     version = invoker.version
 
-    core_json_file =
-        "//third_party/spirv-headers/include/spirv/$version/spirv.core.grammar.json"
+    core_json_file = "//third_party/spirv-headers/include/spirv/$version/spirv.core.grammar.json"
     glsl_json_file = "//third_party/spirv-headers/include/spirv/${version}/extinst.glsl.std.450.grammar.json"
-    debuginfo_insts_file =
-        "//third_party/spirv-headers/include/spirv/unified1/extinst.debuginfo.grammar.json"
+    debuginfo_insts_file = "//third_party/spirv-headers/include/spirv/unified1/extinst.debuginfo.grammar.json"
     cldebuginfo100_insts_file = "//third_party/spirv-headers/include/spirv/unified1/extinst.opencl.debuginfo.100.grammar.json"
 
     glsl_insts_file = "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools/glsl.std.450.insts.inc"
@@ -194,7 +191,7 @@ template("spvtools_glsl_tables") {
       "--glsl-insts-output",
       rebase_path(glsl_insts_file, root_build_dir),
       "--output-language",
-      "c++"
+      "c++",
     ]
     inputs = [
       core_json_file,
@@ -214,11 +211,9 @@ template("spvtools_opencl_tables") {
 
     version = invoker.version
 
-    core_json_file =
-        "//third_party/spirv-headers/include/spirv/$version/spirv.core.grammar.json"
+    core_json_file = "//third_party/spirv-headers/include/spirv/$version/spirv.core.grammar.json"
     opencl_json_file = "//third_party/spirv-headers/include/spirv/${version}/extinst.opencl.std.100.grammar.json"
-    debuginfo_insts_file =
-        "//third_party/spirv-headers/include/spirv/unified1/extinst.debuginfo.grammar.json"
+    debuginfo_insts_file = "//third_party/spirv-headers/include/spirv/unified1/extinst.debuginfo.grammar.json"
     cldebuginfo100_insts_file = "//third_party/spirv-headers/include/spirv/unified1/extinst.opencl.debuginfo.100.grammar.json"
 
     opencl_insts_file = "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools/opencl.std.insts.inc"
@@ -272,8 +267,7 @@ template("spvtools_vendor_table") {
     script = "utils/generate_grammar_tables.py"
 
     name = invoker.name
-    extinst_vendor_grammar =
-        "//third_party/spirv-headers/include/spirv/unified1/extinst.${name}.grammar.json"
+    extinst_vendor_grammar = "//third_party/spirv-headers/include/spirv/unified1/extinst.${name}.grammar.json"
     extinst_file = "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools/${name}.insts.inc"
 
     args = [
@@ -290,7 +284,8 @@ template("spvtools_vendor_table") {
 }
 
 config("spvtools_include_gen_dirs") {
-  include_dirs = [ "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools" ]
+  include_dirs =
+      [ "//third_party/vk-gl-cts/build/external/spirv-tools/spirv-tools" ]
 }
 
 config("spvtools_internal_config") {
@@ -341,6 +336,11 @@ ohos_source_set("spvtools_headers") {
 
 ohos_source_set("deqp_spirvtool_source") {
   sources = [
+    "include/spirv-tools/instrument.hpp",
+    "include/spirv-tools/libspirv.h",
+    "include/spirv-tools/libspirv.hpp",
+    "include/spirv-tools/linker.hpp",
+    "include/spirv-tools/optimizer.hpp",
     "include/spirv/1.2/GLSL.std.450.h",
     "include/spirv/1.2/OpenCL.std.h",
     "include/spirv/1.2/spirv.h",
@@ -351,11 +351,6 @@ ohos_source_set("deqp_spirvtool_source") {
     "include/spirv/unified1/OpenCL.std.h",
     "include/spirv/unified1/spirv.h",
     "include/spirv/unified1/spirv.hpp",
-    "include/spirv-tools/instrument.hpp",
-    "include/spirv-tools/libspirv.h",
-    "include/spirv-tools/libspirv.hpp",
-    "include/spirv-tools/linker.hpp",
-    "include/spirv-tools/optimizer.hpp",
     "source/assembly_grammar.cpp",
     "source/assembly_grammar.h",
     "source/binary.cpp",
@@ -855,9 +850,9 @@ if (build_with_chromium && spvtools_build_executables) {
     deps = [
       ":libdeqp_spirvtools",
       ":spvtools_fuzz_proto",
+      "//third_party/protobuf:protobuf_full",
       "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
       "//third_party/spirv-tools/source/reduce:libdeqp_spirvtools-reduce",
-      "//third_party/protobuf:protobuf_full",
     ]
     public_deps = [ ":spvtools_headers" ]
     configs -= [ "//build/config/compiler:chromium_code" ]
@@ -868,17 +863,15 @@ if (build_with_chromium && spvtools_build_executables) {
 
 ohos_source_set("spvtools_software_version") {
   sources = [ "source/software_version.cpp" ]
-  deps = [
-    ":spvtools_headers",
-  ]
+  deps = [ ":spvtools_headers" ]
   configs = [ ":spvtools_internal_config" ]
 }
 
 ohos_source_set("spvtools_tools_util") {
   sources = [
-    "tools/util/flags.cpp",
     "tools/util/cli_consumer.cpp",
     "tools/util/cli_consumer.h",
+    "tools/util/flags.cpp",
   ]
   deps = [ ":spvtools_headers" ]
   configs = [ ":spvtools_internal_config" ]
@@ -934,9 +927,9 @@ if (spvtools_build_executables) {
     sources = [ "tools/opt/opt.cpp" ]
     deps = [
       ":libdeqp_spirvtools",
-      "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
       ":spvtools_software_version",
       ":spvtools_tools_util",
+      "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
       "//third_party/spirv-tools/source/val:libdeqp_spirvtools-val",
     ]
     configs += [ ":spvtools_internal_config" ]
@@ -946,17 +939,18 @@ if (spvtools_build_executables) {
     sources = [ "tools/link/linker.cpp" ]
     deps = [
       ":libdeqp_spirvtools",
-      "//third_party/spirv-tools/source/link:libdeqp_spirvtools-link",
-      "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
       ":spvtools_software_version",
       ":spvtools_tools_util",
+      "//third_party/spirv-tools/source/link:libdeqp_spirvtools-link",
+      "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
       "//third_party/spirv-tools/source/val:libdeqp_spirvtools-val",
     ]
     configs += [ ":spvtools_internal_config" ]
   }
 }
 
-if (!is_ios && !spirv_is_winuwp && build_with_chromium && spvtools_build_executables) {
+if (!is_ios && !spirv_is_winuwp && build_with_chromium &&
+    spvtools_build_executables) {
   # iOS and UWP do not allow std::system calls which spirv-fuzz
   # requires. Additionally, spirv-fuzz is only built when in a
   # Chromium checkout due to its dependency on protobuf.
@@ -966,12 +960,12 @@ if (!is_ios && !spirv_is_winuwp && build_with_chromium && spvtools_build_executa
     deps = [
       ":libdeqp_spirvtools",
       ":spvtools_fuzz",
-      "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
-      "//third_party/spirv-tools/source/reduce:libdeqp_spirvtools-reduce",
       ":spvtools_software_version",
       ":spvtools_tools_util",
-      "//third_party/spirv-tools/source/val:libdeqp_spirvtools-val",
       "//third_party/protobuf:protobuf_full",
+      "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
+      "//third_party/spirv-tools/source/reduce:libdeqp_spirvtools-reduce",
+      "//third_party/spirv-tools/source/val:libdeqp_spirvtools-val",
     ]
     configs += [ ":spvtools_internal_config" ]
   }
@@ -985,17 +979,17 @@ if (!is_ios && !spirv_is_winuwp && spvtools_build_executables) {
     sources = [ "tools/reduce/reduce.cpp" ]
     deps = [
       ":libdeqp_spirvtools",
-      "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
-      "//third_party/spirv-tools/source/reduce:libdeqp_spirvtools-reduce",
       ":spvtools_software_version",
       ":spvtools_tools_util",
+      "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
+      "//third_party/spirv-tools/source/reduce:libdeqp_spirvtools-reduce",
       "//third_party/spirv-tools/source/val:libdeqp_spirvtools-val",
     ]
     configs += [ ":spvtools_internal_config" ]
   }
 }
 
-if (spvtools_build_executables){
+if (spvtools_build_executables) {
   group("all_spirv_tools") {
     deps = [
       ":spirv-as",
