@@ -125,8 +125,9 @@ TEST(DiffTest, MultipleSameEntryPoints) {
  OpCapability Shader
  %1 = OpExtInstImport "GLSL.std.450"
  OpMemoryModel Logical GLSL450
++OpEntryPoint Vertex %12 "main2" %13 %14 %15
  OpEntryPoint Vertex %4 "main1" %8 %10
- OpEntryPoint Vertex %12 "main2" %13 %14 %15
+-OpEntryPoint Vertex %12 "main2" %13 %14 %15
  OpSource ESSL 310
  OpName %4 "main1"
  OpName %12 "main2"
@@ -256,8 +257,9 @@ TEST(DiffTest, MultipleSameEntryPointsNoDebug) {
  OpCapability Shader
  %1 = OpExtInstImport "GLSL.std.450"
  OpMemoryModel Logical GLSL450
++OpEntryPoint Vertex %12 "main2" %13 %14 %15
  OpEntryPoint Vertex %4 "main1" %8 %10
- OpEntryPoint Vertex %12 "main2" %13 %14 %15
+-OpEntryPoint Vertex %12 "main2" %13 %14 %15
  OpSource ESSL 310
  OpDecorate %8 Location 0
  OpDecorate %10 Location 0
@@ -302,8 +304,9 @@ TEST(DiffTest, MultipleSameEntryPointsDumpIds) {
  OpCapability Shader
  %1 = OpExtInstImport "GLSL.std.450"
  OpMemoryModel Logical GLSL450
++OpEntryPoint Vertex %12 "main2" %13 %14 %15
  OpEntryPoint Vertex %4 "main1" %8 %10
- OpEntryPoint Vertex %12 "main2" %13 %14 %15
+-OpEntryPoint Vertex %12 "main2" %13 %14 %15
  OpSource ESSL 310
  OpName %4 "main1"
  OpName %12 "main2"

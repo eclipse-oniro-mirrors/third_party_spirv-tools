@@ -584,8 +584,6 @@ OpFunctionEnd
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
   EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
-  EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 0"));
 }
@@ -613,8 +611,6 @@ OpFunctionEnd
 
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
-  EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08722"));
   EXPECT_THAT(
       getDiagnosticString(),
       HasSubstr("Entry-point has conflicting output location assignment "
@@ -703,8 +699,6 @@ OpFunctionEnd
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
   EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
-  EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 1"));
 }
@@ -738,8 +732,6 @@ OpFunctionEnd
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
   EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
-  EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 1"));
 }
@@ -769,8 +761,6 @@ OpFunctionEnd
 
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
-  EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
   EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 1"));
@@ -802,8 +792,6 @@ OpFunctionEnd
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
   EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
-  EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 2"));
 }
@@ -833,8 +821,6 @@ OpFunctionEnd
 
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
-  EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
   EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 3"));
@@ -868,8 +854,6 @@ OpFunctionEnd
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
   EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
-  EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 1"));
 }
@@ -901,8 +885,6 @@ OpFunctionEnd
 
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
-  EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
   EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 5"));
@@ -936,8 +918,6 @@ OpFunctionEnd
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
   EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
-  EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 7"));
 }
@@ -970,8 +950,6 @@ OpFunctionEnd
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
   EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
-  EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 1"));
 }
@@ -1003,8 +981,6 @@ OpFunctionEnd
 
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
-  EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
   EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 3"));
@@ -1039,8 +1015,6 @@ OpFunctionEnd
 
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
-  EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
   EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 15"));
@@ -1100,8 +1074,6 @@ OpFunctionEnd
 
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
-  EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08721"));
   EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting input location assignment "
                         "at location 1, component 1"));
@@ -1217,8 +1189,6 @@ OpFunctionEnd
 
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
-  EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08722"));
   EXPECT_THAT(
       getDiagnosticString(),
       HasSubstr("Entry-point has conflicting output location assignment "
@@ -1389,8 +1359,6 @@ OpFunctionEnd
   CompileSuccessfully(text, SPV_ENV_VULKAN_1_0);
   EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_0));
   EXPECT_THAT(getDiagnosticString(),
-              AnyVUID("VUID-StandaloneSpirv-OpEntryPoint-08722"));
-  EXPECT_THAT(getDiagnosticString(),
               HasSubstr("Entry-point has conflicting output location "
                         "assignment at location 1, component 1"));
 }
@@ -1488,7 +1456,7 @@ OpDecorate %struct Block
 OpMemberDecorate %struct 0 Location 0
 OpMemberDecorate %struct 0 Component 0
 OpMemberDecorate %struct 1 Location 0
-OpMemberDecorate %struct 1 Component 2
+OpMemberDecorate %struct 1 Component 1
 %void = OpTypeVoid
 %void_fn = OpTypeFunction %void
 %float = OpTypeFloat 32
@@ -1568,58 +1536,6 @@ OpFunctionEnd
       getDiagnosticString(),
       HasSubstr(
           "Interface struct has no Block decoration but has BuiltIn members."));
-}
-
-TEST_F(ValidateInterfacesTest, InvalidLocationTypePointer) {
-  const std::string text = R"(
-               OpCapability Shader
-               OpMemoryModel Logical Simple
-               OpEntryPoint Vertex %1 "Aiqn0" %2 %3
-               OpDecorate %2 Location 0
-       %void = OpTypeVoid
-          %5 = OpTypeFunction %void
-      %float = OpTypeFloat 32
-%_ptr_Private_void = OpTypePointer Private %void
-       %uint = OpTypeInt 32 0
-%uint_4278132784 = OpConstant %uint 4278132784
-%_arr__ptr_Private_void_uint_4278132784 = OpTypeArray %_ptr_Private_void %uint_4278132784
-%_ptr_Output__arr__ptr_Private_void_uint_4278132784 = OpTypePointer Output %_arr__ptr_Private_void_uint_4278132784
-          %2 = OpVariable %_ptr_Output__arr__ptr_Private_void_uint_4278132784 Output
-%_ptr_Output__ptr_Private_void = OpTypePointer Output %_ptr_Private_void
-          %3 = OpVariable %_ptr_Output__arr__ptr_Private_void_uint_4278132784 Output
-          %1 = OpFunction %void None %5
-         %15 = OpLabel
-               OpReturn
-               OpFunctionEnd
-)";
-
-  CompileSuccessfully(text, SPV_ENV_VULKAN_1_1);
-  EXPECT_EQ(SPV_ERROR_INVALID_DATA, ValidateInstructions(SPV_ENV_VULKAN_1_1));
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr("Invalid type to assign a location"));
-}
-
-TEST_F(ValidateInterfacesTest, ValidLocationTypePhysicalStorageBufferPointer) {
-  const std::string text = R"(
-OpCapability Shader
-OpCapability PhysicalStorageBufferAddresses
-OpMemoryModel PhysicalStorageBuffer64 GLSL450
-OpEntryPoint Vertex %main "main" %var
-OpDecorate %var Location 0
-OpDecorate %var RestrictPointer
-%void = OpTypeVoid
-%int = OpTypeInt 32 0
-%ptr = OpTypePointer PhysicalStorageBuffer %int
-%ptr2 = OpTypePointer Input %ptr
-%var = OpVariable %ptr2 Input
-%void_fn = OpTypeFunction %void
-%main = OpFunction %void None %void_fn
-%entry = OpLabel
-OpReturn
-OpFunctionEnd
-)";
-  CompileSuccessfully(text, SPV_ENV_VULKAN_1_3);
-  EXPECT_EQ(SPV_SUCCESS, ValidateInstructions(SPV_ENV_VULKAN_1_3));
 }
 
 }  // namespace

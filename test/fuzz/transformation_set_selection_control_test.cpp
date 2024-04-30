@@ -109,41 +109,41 @@ TEST(TransformationSetSelectionControlTest, VariousScenarios) {
   TransformationContext transformation_context(
       MakeUnique<FactManager>(context.get()), validator_options);
   // %44 is not a block
-  ASSERT_FALSE(TransformationSetSelectionControl(
-                   44, uint32_t(spv::SelectionControlMask::Flatten))
-                   .IsApplicable(context.get(), transformation_context));
+  ASSERT_FALSE(
+      TransformationSetSelectionControl(44, SpvSelectionControlFlattenMask)
+          .IsApplicable(context.get(), transformation_context));
   // %13 does not end with OpSelectionMerge
-  ASSERT_FALSE(TransformationSetSelectionControl(
-                   13, uint32_t(spv::SelectionControlMask::MaskNone))
-                   .IsApplicable(context.get(), transformation_context));
+  ASSERT_FALSE(
+      TransformationSetSelectionControl(13, SpvSelectionControlMaskNone)
+          .IsApplicable(context.get(), transformation_context));
   // %10 ends in OpLoopMerge, not OpSelectionMerge
-  ASSERT_FALSE(TransformationSetSelectionControl(
-                   10, uint32_t(spv::SelectionControlMask::MaskNone))
-                   .IsApplicable(context.get(), transformation_context));
+  ASSERT_FALSE(
+      TransformationSetSelectionControl(10, SpvSelectionControlMaskNone)
+          .IsApplicable(context.get(), transformation_context));
 
   TransformationSetSelectionControl transformation1(
-      11, uint32_t(spv::SelectionControlMask::DontFlatten));
+      11, SpvSelectionControlDontFlattenMask);
   ASSERT_TRUE(
       transformation1.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(transformation1, context.get(),
                         &transformation_context);
 
   TransformationSetSelectionControl transformation2(
-      23, uint32_t(spv::SelectionControlMask::Flatten));
+      23, SpvSelectionControlFlattenMask);
   ASSERT_TRUE(
       transformation2.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(transformation2, context.get(),
                         &transformation_context);
 
   TransformationSetSelectionControl transformation3(
-      31, uint32_t(spv::SelectionControlMask::MaskNone));
+      31, SpvSelectionControlMaskNone);
   ASSERT_TRUE(
       transformation3.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(transformation3, context.get(),
                         &transformation_context);
 
   TransformationSetSelectionControl transformation4(
-      31, uint32_t(spv::SelectionControlMask::Flatten));
+      31, SpvSelectionControlFlattenMask);
   ASSERT_TRUE(
       transformation4.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(transformation4, context.get(),

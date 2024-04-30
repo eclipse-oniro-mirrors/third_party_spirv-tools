@@ -40,8 +40,7 @@ bool TransformationAddTypeFloat::IsApplicable(
   switch (message_.width()) {
     case 16:
       // The Float16 capability must be present.
-      if (!ir_context->get_feature_mgr()->HasCapability(
-              spv::Capability::Float16)) {
+      if (!ir_context->get_feature_mgr()->HasCapability(SpvCapabilityFloat16)) {
         return false;
       }
       break;
@@ -50,8 +49,7 @@ bool TransformationAddTypeFloat::IsApplicable(
       break;
     case 64:
       // The Float64 capability must be present.
-      if (!ir_context->get_feature_mgr()->HasCapability(
-              spv::Capability::Float64)) {
+      if (!ir_context->get_feature_mgr()->HasCapability(SpvCapabilityFloat64)) {
         return false;
       }
       break;
@@ -68,7 +66,7 @@ bool TransformationAddTypeFloat::IsApplicable(
 void TransformationAddTypeFloat::Apply(
     opt::IRContext* ir_context, TransformationContext* /*unused*/) const {
   auto type_instruction = MakeUnique<opt::Instruction>(
-      ir_context, spv::Op::OpTypeFloat, 0, message_.fresh_id(),
+      ir_context, SpvOpTypeFloat, 0, message_.fresh_id(),
       opt::Instruction::OperandList{
           {SPV_OPERAND_TYPE_LITERAL_INTEGER, {message_.width()}}});
   auto type_instruction_ptr = type_instruction.get();

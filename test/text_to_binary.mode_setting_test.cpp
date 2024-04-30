@@ -46,9 +46,9 @@ struct MemoryModelCase {
   uint32_t get_memory_value() const {
     return static_cast<uint32_t>(memory_value);
   }
-  spv::AddressingModel addressing_value;
+  SpvAddressingModel addressing_value;
   std::string addressing_name;
-  spv::MemoryModel memory_value;
+  SpvMemoryModel memory_value;
   std::string memory_name;
 };
 
@@ -58,16 +58,16 @@ using OpMemoryModelTest =
 TEST_P(OpMemoryModelTest, AnyMemoryModelCase) {
   const std::string input = "OpMemoryModel " + GetParam().addressing_name +
                             " " + GetParam().memory_name;
-  EXPECT_THAT(CompiledInstructions(input),
-              Eq(MakeInstruction(spv::Op::OpMemoryModel,
-                                 {GetParam().get_addressing_value(),
-                                  GetParam().get_memory_value()})));
+  EXPECT_THAT(
+      CompiledInstructions(input),
+      Eq(MakeInstruction(SpvOpMemoryModel, {GetParam().get_addressing_value(),
+                                            GetParam().get_memory_value()})));
 }
 
-#define CASE(ADDRESSING, MEMORY)                                             \
-  {                                                                          \
-    spv::AddressingModel::ADDRESSING, #ADDRESSING, spv::MemoryModel::MEMORY, \
-        #MEMORY                                                              \
+#define CASE(ADDRESSING, MEMORY)                                         \
+  {                                                                      \
+    SpvAddressingModel##ADDRESSING, #ADDRESSING, SpvMemoryModel##MEMORY, \
+        #MEMORY                                                          \
   }
 // clang-format off
 INSTANTIATE_TEST_SUITE_P(TextToBinaryMemoryModel, OpMemoryModelTest,
@@ -97,7 +97,7 @@ struct EntryPointCase {
   uint32_t get_execution_value() const {
     return static_cast<uint32_t>(execution_value);
   }
-  spv::ExecutionModel execution_value;
+  SpvExecutionModel execution_value;
   std::string execution_name;
   std::string entry_point_name;
 };
@@ -109,14 +109,14 @@ TEST_P(OpEntryPointTest, AnyEntryPointCase) {
   // TODO(dneto): utf-8, escaping, quoting cases for entry point name.
   const std::string input = "OpEntryPoint " + GetParam().execution_name +
                             " %1 \"" + GetParam().entry_point_name + "\"";
-  EXPECT_THAT(CompiledInstructions(input),
-              Eq(MakeInstruction(spv::Op::OpEntryPoint,
-                                 {GetParam().get_execution_value(), 1},
-                                 MakeVector(GetParam().entry_point_name))));
+  EXPECT_THAT(
+      CompiledInstructions(input),
+      Eq(MakeInstruction(SpvOpEntryPoint, {GetParam().get_execution_value(), 1},
+                         MakeVector(GetParam().entry_point_name))));
 }
 
 // clang-format off
-#define CASE(NAME) spv::ExecutionModel::NAME, #NAME
+#define CASE(NAME) SpvExecutionModel##NAME, #NAME
 INSTANTIATE_TEST_SUITE_P(TextToBinaryEntryPoint, OpEntryPointTest,
                         ValuesIn(std::vector<EntryPointCase>{
                           { CASE(Vertex), "" },
@@ -137,7 +137,7 @@ TEST_F(OpEntryPointTest, WrongModel) {
 
 // Test OpExecutionMode
 using OpExecutionModeTest = spvtest::TextToBinaryTestBase<
-    TestWithParam<std::tuple<spv_target_env, EnumCase<spv::ExecutionMode>>>>;
+    TestWithParam<std::tuple<spv_target_env, EnumCase<SpvExecutionMode>>>>;
 
 TEST_P(OpExecutionModeTest, AnyExecutionMode) {
   // This string should assemble, but should not validate.
@@ -146,16 +146,16 @@ TEST_P(OpExecutionModeTest, AnyExecutionMode) {
   for (auto operand : std::get<1>(GetParam()).operands())
     input << " " << operand;
   EXPECT_THAT(CompiledInstructions(input.str(), std::get<0>(GetParam())),
-              Eq(MakeInstruction(spv::Op::OpExecutionMode,
+              Eq(MakeInstruction(SpvOpExecutionMode,
                                  {1, std::get<1>(GetParam()).value()},
                                  std::get<1>(GetParam()).operands())));
 }
 
-#define CASE(NAME) spv::ExecutionMode::NAME, #NAME
+#define CASE(NAME) SpvExecutionMode##NAME, #NAME
 INSTANTIATE_TEST_SUITE_P(
     TextToBinaryExecutionMode, OpExecutionModeTest,
     Combine(Values(SPV_ENV_UNIVERSAL_1_0, SPV_ENV_UNIVERSAL_1_1),
-            ValuesIn(std::vector<EnumCase<spv::ExecutionMode>>{
+            ValuesIn(std::vector<EnumCase<SpvExecutionMode>>{
                 // The operand literal values are arbitrarily chosen,
                 // but there are the right number of them.
                 {CASE(Invocations), {101}},
@@ -195,7 +195,7 @@ INSTANTIATE_TEST_SUITE_P(
 INSTANTIATE_TEST_SUITE_P(
     TextToBinaryExecutionModeV11, OpExecutionModeTest,
     Combine(Values(SPV_ENV_UNIVERSAL_1_1),
-            ValuesIn(std::vector<EnumCase<spv::ExecutionMode>>{
+            ValuesIn(std::vector<EnumCase<SpvExecutionMode>>{
                 {CASE(Initializer)},
                 {CASE(Finalizer)},
                 {CASE(SubgroupSize), {12}},
@@ -216,18 +216,18 @@ TEST_F(OpExecutionModeTest, TooManyModes) {
 // Test OpCapability
 
 using OpCapabilityTest =
-    spvtest::TextToBinaryTestBase<TestWithParam<EnumCase<spv::Capability>>>;
+    spvtest::TextToBinaryTestBase<TestWithParam<EnumCase<SpvCapability>>>;
 
 TEST_P(OpCapabilityTest, AnyCapability) {
   const std::string input = "OpCapability " + GetParam().name();
   EXPECT_THAT(CompiledInstructions(input),
-              Eq(MakeInstruction(spv::Op::OpCapability, {GetParam().value()})));
+              Eq(MakeInstruction(SpvOpCapability, {GetParam().value()})));
 }
 
 // clang-format off
-#define CASE(NAME) { spv::Capability::NAME, #NAME }
+#define CASE(NAME) { SpvCapability##NAME, #NAME }
 INSTANTIATE_TEST_SUITE_P(TextToBinaryCapability, OpCapabilityTest,
-                        ValuesIn(std::vector<EnumCase<spv::Capability>>{
+                        ValuesIn(std::vector<EnumCase<SpvCapability>>{
                             CASE(Matrix),
                             CASE(Shader),
                             CASE(Geometry),

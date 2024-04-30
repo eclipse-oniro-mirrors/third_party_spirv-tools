@@ -34,11 +34,10 @@ void FuzzerPassAddStores::Apply() {
              opt::BasicBlock::iterator inst_it,
              const protobufs::InstructionDescriptor& instruction_descriptor)
           -> void {
-        assert(
-            inst_it->opcode() ==
-                spv::Op(instruction_descriptor.target_instruction_opcode()) &&
-            "The opcode of the instruction we might insert before must be "
-            "the same as the opcode in the descriptor for the instruction");
+        assert(inst_it->opcode() ==
+                   instruction_descriptor.target_instruction_opcode() &&
+               "The opcode of the instruction we might insert before must be "
+               "the same as the opcode in the descriptor for the instruction");
 
         // Randomly decide whether to try inserting a store here.
         if (!GetFuzzerContext()->ChoosePercentage(
@@ -48,12 +47,12 @@ void FuzzerPassAddStores::Apply() {
 
         // Check whether it is legitimate to insert a store before this
         // instruction.
-        if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(spv::Op::OpStore,
+        if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(SpvOpStore,
                                                           inst_it)) {
           return;
         }
-        if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(
-                spv::Op::OpAtomicStore, inst_it)) {
+        if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(SpvOpAtomicStore,
+                                                          inst_it)) {
           return;
         }
 
@@ -68,7 +67,7 @@ void FuzzerPassAddStores::Apply() {
                   }
                   auto type_inst = context->get_def_use_mgr()->GetDef(
                       instruction->type_id());
-                  if (type_inst->opcode() != spv::Op::OpTypePointer) {
+                  if (type_inst->opcode() != SpvOpTypePointer) {
                     // Not a pointer.
                     return false;
                   }
@@ -77,8 +76,8 @@ void FuzzerPassAddStores::Apply() {
                     return false;
                   }
                   switch (instruction->opcode()) {
-                    case spv::Op::OpConstantNull:
-                    case spv::Op::OpUndef:
+                    case SpvOpConstantNull:
+                    case SpvOpUndef:
                       // Do not allow storing to a null or undefined pointer;
                       // this might be OK if the block is dead, but for now we
                       // conservatively avoid it.
@@ -127,24 +126,24 @@ void FuzzerPassAddStores::Apply() {
         uint32_t memory_semantics_id = 0;
 
         auto storage_class =
-            static_cast<spv::StorageClass>(GetIRContext()
-                                               ->get_def_use_mgr()
-                                               ->GetDef(pointer->type_id())
-                                               ->GetSingleWordInOperand(0));
+            static_cast<SpvStorageClass>(GetIRContext()
+                                             ->get_def_use_mgr()
+                                             ->GetDef(pointer->type_id())
+                                             ->GetSingleWordInOperand(0));
 
         switch (storage_class) {
-          case spv::StorageClass::StorageBuffer:
-          case spv::StorageClass::PhysicalStorageBuffer:
-          case spv::StorageClass::Workgroup:
-          case spv::StorageClass::CrossWorkgroup:
-          case spv::StorageClass::AtomicCounter:
-          case spv::StorageClass::Image:
+          case SpvStorageClassStorageBuffer:
+          case SpvStorageClassPhysicalStorageBuffer:
+          case SpvStorageClassWorkgroup:
+          case SpvStorageClassCrossWorkgroup:
+          case SpvStorageClassAtomicCounter:
+          case SpvStorageClassImage:
             if (GetFuzzerContext()->ChoosePercentage(
                     GetFuzzerContext()->GetChanceOfAddingAtomicStore())) {
               is_atomic_store = true;
 
               memory_scope_id = FindOrCreateConstant(
-                  {uint32_t(spv::Scope::Invocation)},
+                  {SpvScopeInvocation},
                   FindOrCreateIntegerType(32, GetFuzzerContext()->ChooseEven()),
                   false);
 

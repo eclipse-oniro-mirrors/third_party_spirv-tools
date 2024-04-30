@@ -39,8 +39,7 @@ void FuzzerPassMutatePointers::Apply() {
           return;
         }
 
-        if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(spv::Op::OpLoad,
-                                                          inst_it)) {
+        if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(SpvOpLoad, inst_it)) {
           return;
         }
 

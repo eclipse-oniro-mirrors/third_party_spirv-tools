@@ -39,15 +39,14 @@ bool TransformationToggleAccessChainInstruction::IsApplicable(
     return false;
   }
 
-  spv::Op opcode = static_cast<spv::Op>(
+  SpvOp opcode = static_cast<SpvOp>(
       message_.instruction_descriptor().target_instruction_opcode());
 
   assert(instruction->opcode() == opcode &&
          "The located instruction must have the same opcode as in the "
          "descriptor.");
 
-  if (opcode == spv::Op::OpAccessChain ||
-      opcode == spv::Op::OpInBoundsAccessChain) {
+  if (opcode == SpvOpAccessChain || opcode == SpvOpInBoundsAccessChain) {
     return true;
   }
 
@@ -58,15 +57,15 @@ void TransformationToggleAccessChainInstruction::Apply(
     opt::IRContext* ir_context, TransformationContext* /*unused*/) const {
   auto instruction =
       FindInstruction(message_.instruction_descriptor(), ir_context);
-  spv::Op opcode = instruction->opcode();
+  SpvOp opcode = instruction->opcode();
 
-  if (opcode == spv::Op::OpAccessChain) {
-    instruction->SetOpcode(spv::Op::OpInBoundsAccessChain);
+  if (opcode == SpvOpAccessChain) {
+    instruction->SetOpcode(SpvOpInBoundsAccessChain);
   } else {
-    assert(opcode == spv::Op::OpInBoundsAccessChain &&
+    assert(opcode == SpvOpInBoundsAccessChain &&
            "The located instruction must be an OpInBoundsAccessChain "
            "instruction.");
-    instruction->SetOpcode(spv::Op::OpAccessChain);
+    instruction->SetOpcode(SpvOpAccessChain);
   }
 }
 

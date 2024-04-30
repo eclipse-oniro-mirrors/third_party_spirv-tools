@@ -29,17 +29,16 @@ FuzzerPassAddGlobalVariables::FuzzerPassAddGlobalVariables(
                  transformations, ignore_inapplicable_transformations) {}
 
 void FuzzerPassAddGlobalVariables::Apply() {
-  spv::StorageClass variable_storage_class = spv::StorageClass::Private;
+  SpvStorageClass variable_storage_class = SpvStorageClassPrivate;
   for (auto& entry_point : GetIRContext()->module()->entry_points()) {
     // If the execution model of some entry point is GLCompute,
     // then the variable storage class may be Workgroup.
-    if (spv::ExecutionModel(entry_point.GetSingleWordInOperand(0)) ==
-        spv::ExecutionModel::GLCompute) {
+    if (entry_point.GetSingleWordInOperand(0) == SpvExecutionModelGLCompute) {
       variable_storage_class =
           GetFuzzerContext()->ChoosePercentage(
               GetFuzzerContext()->GetChanceOfChoosingWorkgroupStorageClass())
-              ? spv::StorageClass::Workgroup
-              : spv::StorageClass::Private;
+              ? SpvStorageClassWorkgroup
+              : SpvStorageClassPrivate;
       break;
     }
   }
@@ -88,7 +87,7 @@ void FuzzerPassAddGlobalVariables::Apply() {
     ApplyTransformation(TransformationAddGlobalVariable(
         GetFuzzerContext()->GetFreshId(), pointer_type_id,
         variable_storage_class,
-        variable_storage_class == spv::StorageClass::Private
+        variable_storage_class == SpvStorageClassPrivate
             ? FindOrCreateZeroConstant(basic_type, false)
             : 0,
         true));

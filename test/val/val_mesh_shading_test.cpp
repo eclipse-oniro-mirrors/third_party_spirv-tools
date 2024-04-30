@@ -14,6 +14,7 @@
 
 // Tests instructions from SPV_EXT_mesh_shader
 
+#include <sstream>
 #include <string>
 
 #include "gmock/gmock.h"

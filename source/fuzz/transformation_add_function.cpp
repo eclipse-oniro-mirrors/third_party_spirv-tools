@@ -178,7 +178,7 @@ void TransformationAddFunction::Apply(
   }
   ir_context->InvalidateAnalysesExceptFor(opt::IRContext::kAnalysisNone);
 
-  assert(spv::Op(message_.instruction(0).opcode()) == spv::Op::OpFunction &&
+  assert(message_.instruction(0).opcode() == SpvOpFunction &&
          "The first instruction of an 'add function' transformation must be "
          "OpFunction.");
 
@@ -189,7 +189,7 @@ void TransformationAddFunction::Apply(
   } else {
     // Inform the fact manager that all blocks in the function are dead.
     for (auto& inst : message_.instruction()) {
-      if (spv::Op(inst.opcode()) == spv::Op::OpLabel) {
+      if (inst.opcode() == SpvOpLabel) {
         transformation_context->GetFactManager()->AddFactBlockIsDead(
             inst.result_id());
       }
@@ -202,16 +202,16 @@ void TransformationAddFunction::Apply(
   // parameters to other functions knowing that it is OK if they get
   // over-written.
   for (auto& instruction : message_.instruction()) {
-    switch (spv::Op(instruction.opcode())) {
-      case spv::Op::OpFunctionParameter:
+    switch (instruction.opcode()) {
+      case SpvOpFunctionParameter:
         if (ir_context->get_def_use_mgr()
                 ->GetDef(instruction.result_type_id())
-                ->opcode() == spv::Op::OpTypePointer) {
+                ->opcode() == SpvOpTypePointer) {
           transformation_context->GetFactManager()
               ->AddFactValueOfPointeeIsIrrelevant(instruction.result_id());
         }
         break;
-      case spv::Op::OpVariable:
+      case SpvOpVariable:
         transformation_context->GetFactManager()
             ->AddFactValueOfPointeeIsIrrelevant(instruction.result_id());
         break;
@@ -239,7 +239,7 @@ bool TransformationAddFunction::TryToAddFunction(
 
   // A function must start with OpFunction.
   auto function_begin = message_.instruction(0);
-  if (spv::Op(function_begin.opcode()) != spv::Op::OpFunction) {
+  if (function_begin.opcode() != SpvOpFunction) {
     return false;
   }
 
@@ -256,8 +256,8 @@ bool TransformationAddFunction::TryToAddFunction(
   // Iterate through all function parameter instructions, adding parameters to
   // the new function.
   while (instruction_index < num_instructions &&
-         spv::Op(message_.instruction(instruction_index).opcode()) ==
-             spv::Op::OpFunctionParameter) {
+         message_.instruction(instruction_index).opcode() ==
+             SpvOpFunctionParameter) {
     new_function->AddParameter(InstructionFromMessage(
         ir_context, message_.instruction(instruction_index)));
     instruction_index++;
@@ -265,19 +265,16 @@ bool TransformationAddFunction::TryToAddFunction(
 
   // After the parameters, there needs to be a label.
   if (instruction_index == num_instructions ||
-      spv::Op(message_.instruction(instruction_index).opcode()) !=
-          spv::Op::OpLabel) {
+      message_.instruction(instruction_index).opcode() != SpvOpLabel) {
     return false;
   }
 
   // Iterate through the instructions block by block until the end of the
   // function is reached.
   while (instruction_index < num_instructions &&
-         spv::Op(message_.instruction(instruction_index).opcode()) !=
-             spv::Op::OpFunctionEnd) {
+         message_.instruction(instruction_index).opcode() != SpvOpFunctionEnd) {
     // Invariant: we should always be at a label instruction at this point.
-    assert(spv::Op(message_.instruction(instruction_index).opcode()) ==
-           spv::Op::OpLabel);
+    assert(message_.instruction(instruction_index).opcode() == SpvOpLabel);
 
     // Make a basic block using the label instruction.
     std::unique_ptr<opt::BasicBlock> block =
@@ -288,10 +285,9 @@ bool TransformationAddFunction::TryToAddFunction(
     // of the function, adding each such instruction to the block.
     instruction_index++;
     while (instruction_index < num_instructions &&
-           spv::Op(message_.instruction(instruction_index).opcode()) !=
-               spv::Op::OpFunctionEnd &&
-           spv::Op(message_.instruction(instruction_index).opcode()) !=
-               spv::Op::OpLabel) {
+           message_.instruction(instruction_index).opcode() !=
+               SpvOpFunctionEnd &&
+           message_.instruction(instruction_index).opcode() != SpvOpLabel) {
       block->AddInstruction(InstructionFromMessage(
           ir_context, message_.instruction(instruction_index)));
       instruction_index++;
@@ -302,8 +298,7 @@ bool TransformationAddFunction::TryToAddFunction(
   // Having considered all the blocks, we should be at the last instruction and
   // it needs to be OpFunctionEnd.
   if (instruction_index != num_instructions - 1 ||
-      spv::Op(message_.instruction(instruction_index).opcode()) !=
-          spv::Op::OpFunctionEnd) {
+      message_.instruction(instruction_index).opcode() != SpvOpFunctionEnd) {
     return false;
   }
   // Set the function's final instruction, add the function to the module and
@@ -344,20 +339,20 @@ bool TransformationAddFunction::TryToMakeFunctionLivesafe(
   for (auto& block : *added_function) {
     for (auto& inst : block) {
       switch (inst.opcode()) {
-        case spv::Op::OpKill:
-        case spv::Op::OpUnreachable:
+        case SpvOpKill:
+        case SpvOpUnreachable:
           if (!TryToTurnKillOrUnreachableIntoReturn(ir_context, added_function,
                                                     &inst)) {
             return false;
           }
           break;
-        case spv::Op::OpAccessChain:
-        case spv::Op::OpInBoundsAccessChain:
+        case SpvOpAccessChain:
+        case SpvOpInBoundsAccessChain:
           if (!TryToClampAccessChainIndices(ir_context, &inst)) {
             return false;
           }
           break;
-        case spv::Op::OpFunctionCall:
+        case SpvOpFunctionCall:
           // A livesafe function my only call other livesafe functions.
           if (!transformation_context.GetFactManager()->FunctionIsLivesafe(
                   inst.GetSingleWordInOperand(0))) {
@@ -409,7 +404,7 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
   auto loop_limit_constant_id_instr =
       ir_context->get_def_use_mgr()->GetDef(message_.loop_limit_constant_id());
   if (!loop_limit_constant_id_instr ||
-      loop_limit_constant_id_instr->opcode() != spv::Op::OpConstant) {
+      loop_limit_constant_id_instr->opcode() != SpvOpConstant) {
     // The loop limit constant id instruction must exist and have an
     // appropriate opcode.
     return false;
@@ -417,7 +412,7 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
 
   auto loop_limit_type = ir_context->get_def_use_mgr()->GetDef(
       loop_limit_constant_id_instr->type_id());
-  if (loop_limit_type->opcode() != spv::Op::OpTypeInt ||
+  if (loop_limit_type->opcode() != SpvOpTypeInt ||
       loop_limit_type->GetSingleWordInOperand(0) != 32) {
     // The type of the loop limit constant must be 32-bit integer.  It
     // doesn't actually matter whether the integer is signed or not.
@@ -462,7 +457,7 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
 
   // Look for pointer-to-unsigned int type.
   opt::analysis::Pointer pointer_to_unsigned_int_type(
-      registered_unsigned_int_type, spv::StorageClass::Function);
+      registered_unsigned_int_type, SpvStorageClassFunction);
   uint32_t pointer_to_unsigned_int_type_id =
       ir_context->get_type_mgr()->GetId(&pointer_to_unsigned_int_type);
   if (!pointer_to_unsigned_int_type_id) {
@@ -482,13 +477,13 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
 
   // Declare the loop limiter variable at the start of the function's entry
   // block, via an instruction of the form:
-  //   %loop_limiter_var = spv::Op::OpVariable %ptr_to_uint Function %zero
+  //   %loop_limiter_var = SpvOpVariable %ptr_to_uint Function %zero
   added_function->begin()->begin()->InsertBefore(MakeUnique<opt::Instruction>(
-      ir_context, spv::Op::OpVariable, pointer_to_unsigned_int_type_id,
+      ir_context, SpvOpVariable, pointer_to_unsigned_int_type_id,
       message_.loop_limiter_variable_id(),
-      opt::Instruction::OperandList({{SPV_OPERAND_TYPE_STORAGE_CLASS,
-                                      {uint32_t(spv::StorageClass::Function)}},
-                                     {SPV_OPERAND_TYPE_ID, {zero_id}}})));
+      opt::Instruction::OperandList(
+          {{SPV_OPERAND_TYPE_STORAGE_CLASS, {SpvStorageClassFunction}},
+           {SPV_OPERAND_TYPE_ID, {zero_id}}})));
   // Update the module's id bound since we have added the loop limiter
   // variable id.
   fuzzerutil::UpdateModuleIdBound(ir_context,
@@ -594,11 +589,10 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
     auto back_edge_block = ir_context->cfg()->block(back_edge_block_id);
     auto back_edge_block_terminator = back_edge_block->terminator();
     bool compare_using_greater_than_equal;
-    if (back_edge_block_terminator->opcode() == spv::Op::OpBranch) {
+    if (back_edge_block_terminator->opcode() == SpvOpBranch) {
       compare_using_greater_than_equal = true;
     } else {
-      assert(back_edge_block_terminator->opcode() ==
-             spv::Op::OpBranchConditional);
+      assert(back_edge_block_terminator->opcode() == SpvOpBranchConditional);
       assert(((back_edge_block_terminator->GetSingleWordInOperand(1) ==
                    loop_header->id() &&
                back_edge_block_terminator->GetSingleWordInOperand(2) ==
@@ -619,7 +613,7 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
     // Add a load from the loop limiter variable, of the form:
     //   %t1 = OpLoad %uint32 %loop_limiter
     new_instructions.push_back(MakeUnique<opt::Instruction>(
-        ir_context, spv::Op::OpLoad, unsigned_int_type_id,
+        ir_context, SpvOpLoad, unsigned_int_type_id,
         loop_limiter_info.load_id(),
         opt::Instruction::OperandList(
             {{SPV_OPERAND_TYPE_ID, {message_.loop_limiter_variable_id()}}})));
@@ -627,7 +621,7 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
     // Increment the loaded value:
     //   %t2 = OpIAdd %uint32 %t1 %one
     new_instructions.push_back(MakeUnique<opt::Instruction>(
-        ir_context, spv::Op::OpIAdd, unsigned_int_type_id,
+        ir_context, SpvOpIAdd, unsigned_int_type_id,
         loop_limiter_info.increment_id(),
         opt::Instruction::OperandList(
             {{SPV_OPERAND_TYPE_ID, {loop_limiter_info.load_id()}},
@@ -636,7 +630,7 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
     // Store the incremented value back to the loop limiter variable:
     //   OpStore %loop_limiter %t2
     new_instructions.push_back(MakeUnique<opt::Instruction>(
-        ir_context, spv::Op::OpStore, 0, 0,
+        ir_context, SpvOpStore, 0, 0,
         opt::Instruction::OperandList(
             {{SPV_OPERAND_TYPE_ID, {message_.loop_limiter_variable_id()}},
              {SPV_OPERAND_TYPE_ID, {loop_limiter_info.increment_id()}}})));
@@ -647,18 +641,17 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
     //   %t3 = OpULessThan %bool %t1 %loop_limit
     new_instructions.push_back(MakeUnique<opt::Instruction>(
         ir_context,
-        compare_using_greater_than_equal ? spv::Op::OpUGreaterThanEqual
-                                         : spv::Op::OpULessThan,
+        compare_using_greater_than_equal ? SpvOpUGreaterThanEqual
+                                         : SpvOpULessThan,
         bool_type_id, loop_limiter_info.compare_id(),
         opt::Instruction::OperandList(
             {{SPV_OPERAND_TYPE_ID, {loop_limiter_info.load_id()}},
              {SPV_OPERAND_TYPE_ID, {message_.loop_limit_constant_id()}}})));
 
-    if (back_edge_block_terminator->opcode() == spv::Op::OpBranchConditional) {
+    if (back_edge_block_terminator->opcode() == SpvOpBranchConditional) {
       new_instructions.push_back(MakeUnique<opt::Instruction>(
           ir_context,
-          compare_using_greater_than_equal ? spv::Op::OpLogicalOr
-                                           : spv::Op::OpLogicalAnd,
+          compare_using_greater_than_equal ? SpvOpLogicalOr : SpvOpLogicalAnd,
           bool_type_id, loop_limiter_info.logical_op_id(),
           opt::Instruction::OperandList(
               {{SPV_OPERAND_TYPE_ID,
@@ -676,11 +669,11 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
       back_edge_block_terminator->InsertBefore(std::move(new_instructions));
     }
 
-    if (back_edge_block_terminator->opcode() == spv::Op::OpBranchConditional) {
+    if (back_edge_block_terminator->opcode() == SpvOpBranchConditional) {
       back_edge_block_terminator->SetInOperand(
           0, {loop_limiter_info.logical_op_id()});
     } else {
-      assert(back_edge_block_terminator->opcode() == spv::Op::OpBranch &&
+      assert(back_edge_block_terminator->opcode() == SpvOpBranch &&
              "Back-edge terminator must be OpBranch or OpBranchConditional");
 
       // Check that, if the merge block starts with OpPhi instructions, suitable
@@ -696,7 +689,7 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
       // Augment OpPhi instructions at the loop merge with the given ids.
       uint32_t phi_index = 0;
       for (auto& inst : *merge_block) {
-        if (inst.opcode() != spv::Op::OpPhi) {
+        if (inst.opcode() != SpvOpPhi) {
           break;
         }
         assert(phi_index <
@@ -709,7 +702,7 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
       }
 
       // Add the new edge, by changing OpBranch to OpBranchConditional.
-      back_edge_block_terminator->SetOpcode(spv::Op::OpBranchConditional);
+      back_edge_block_terminator->SetOpcode(SpvOpBranchConditional);
       back_edge_block_terminator->SetInOperands(opt::Instruction::OperandList(
           {{SPV_OPERAND_TYPE_ID, {loop_limiter_info.compare_id()}},
            {SPV_OPERAND_TYPE_ID, {loop_header->MergeBlockId()}},
@@ -731,18 +724,18 @@ bool TransformationAddFunction::TryToAddLoopLimiters(
 bool TransformationAddFunction::TryToTurnKillOrUnreachableIntoReturn(
     opt::IRContext* ir_context, opt::Function* added_function,
     opt::Instruction* kill_or_unreachable_inst) const {
-  assert((kill_or_unreachable_inst->opcode() == spv::Op::OpKill ||
-          kill_or_unreachable_inst->opcode() == spv::Op::OpUnreachable) &&
+  assert((kill_or_unreachable_inst->opcode() == SpvOpKill ||
+          kill_or_unreachable_inst->opcode() == SpvOpUnreachable) &&
          "Precondition: instruction must be OpKill or OpUnreachable.");
 
   // Get the function's return type.
   auto function_return_type_inst =
       ir_context->get_def_use_mgr()->GetDef(added_function->type_id());
 
-  if (function_return_type_inst->opcode() == spv::Op::OpTypeVoid) {
+  if (function_return_type_inst->opcode() == SpvOpTypeVoid) {
     // The function has void return type, so change this instruction to
     // OpReturn.
-    kill_or_unreachable_inst->SetOpcode(spv::Op::OpReturn);
+    kill_or_unreachable_inst->SetOpcode(SpvOpReturn);
   } else {
     // The function has non-void return type, so change this instruction
     // to OpReturnValue, using the value id provided with the
@@ -756,7 +749,7 @@ bool TransformationAddFunction::TryToTurnKillOrUnreachableIntoReturn(
             ->type_id() != function_return_type_inst->result_id()) {
       return false;
     }
-    kill_or_unreachable_inst->SetOpcode(spv::Op::OpReturnValue);
+    kill_or_unreachable_inst->SetOpcode(SpvOpReturnValue);
     kill_or_unreachable_inst->SetInOperands(
         {{SPV_OPERAND_TYPE_ID, {message_.kill_unreachable_return_value_id()}}});
   }
@@ -765,8 +758,8 @@ bool TransformationAddFunction::TryToTurnKillOrUnreachableIntoReturn(
 
 bool TransformationAddFunction::TryToClampAccessChainIndices(
     opt::IRContext* ir_context, opt::Instruction* access_chain_inst) const {
-  assert((access_chain_inst->opcode() == spv::Op::OpAccessChain ||
-          access_chain_inst->opcode() == spv::Op::OpInBoundsAccessChain) &&
+  assert((access_chain_inst->opcode() == SpvOpAccessChain ||
+          access_chain_inst->opcode() == SpvOpInBoundsAccessChain) &&
          "Precondition: instruction must be OpAccessChain or "
          "OpInBoundsAccessChain.");
 
@@ -800,7 +793,7 @@ bool TransformationAddFunction::TryToClampAccessChainIndices(
   assert(base_object && "The base object must exist.");
   auto pointer_type =
       ir_context->get_def_use_mgr()->GetDef(base_object->type_id());
-  assert(pointer_type && pointer_type->opcode() == spv::Op::OpTypePointer &&
+  assert(pointer_type && pointer_type->opcode() == SpvOpTypePointer &&
          "The base object must have pointer type.");
   auto should_be_composite_type = ir_context->get_def_use_mgr()->GetDef(
       pointer_type->GetSingleWordInOperand(1));
@@ -831,18 +824,18 @@ bool TransformationAddFunction::TryToClampAccessChainIndices(
     auto index_inst = ir_context->get_def_use_mgr()->GetDef(index_id);
     auto index_type_inst =
         ir_context->get_def_use_mgr()->GetDef(index_inst->type_id());
-    assert(index_type_inst->opcode() == spv::Op::OpTypeInt);
+    assert(index_type_inst->opcode() == SpvOpTypeInt);
     assert(index_type_inst->GetSingleWordInOperand(0) == 32);
     opt::analysis::Integer* index_int_type =
         ir_context->get_type_mgr()
             ->GetType(index_type_inst->result_id())
             ->AsInteger();
 
-    if (index_inst->opcode() != spv::Op::OpConstant ||
+    if (index_inst->opcode() != SpvOpConstant ||
         index_inst->GetSingleWordInOperand(0) >= bound) {
       // The index is either non-constant or an out-of-bounds constant, so we
       // need to clamp it.
-      assert(should_be_composite_type->opcode() != spv::Op::OpTypeStruct &&
+      assert(should_be_composite_type->opcode() != SpvOpTypeStruct &&
              "Access chain indices into structures are required to be "
              "constants.");
       opt::analysis::IntConstant bound_minus_one(index_int_type, {bound - 1});
@@ -873,7 +866,7 @@ bool TransformationAddFunction::TryToClampAccessChainIndices(
       // Compare the index with the bound via an instruction of the form:
       //   %t1 = OpULessThanEqual %bool %index %bound_minus_one
       new_instructions.push_back(MakeUnique<opt::Instruction>(
-          ir_context, spv::Op::OpULessThanEqual, bool_type_id, compare_id,
+          ir_context, SpvOpULessThanEqual, bool_type_id, compare_id,
           opt::Instruction::OperandList(
               {{SPV_OPERAND_TYPE_ID, {index_inst->result_id()}},
                {SPV_OPERAND_TYPE_ID, {bound_minus_one_id}}})));
@@ -881,8 +874,7 @@ bool TransformationAddFunction::TryToClampAccessChainIndices(
       // Select the index if in-bounds, otherwise one less than the bound:
       //   %t2 = OpSelect %int_type %t1 %index %bound_minus_one
       new_instructions.push_back(MakeUnique<opt::Instruction>(
-          ir_context, spv::Op::OpSelect, index_type_inst->result_id(),
-          select_id,
+          ir_context, SpvOpSelect, index_type_inst->result_id(), select_id,
           opt::Instruction::OperandList(
               {{SPV_OPERAND_TYPE_ID, {compare_id}},
                {SPV_OPERAND_TYPE_ID, {index_inst->result_id()}},
@@ -907,20 +899,20 @@ opt::Instruction* TransformationAddFunction::FollowCompositeIndex(
     uint32_t index_id) {
   uint32_t sub_object_type_id;
   switch (composite_type_inst.opcode()) {
-    case spv::Op::OpTypeArray:
-    case spv::Op::OpTypeRuntimeArray:
+    case SpvOpTypeArray:
+    case SpvOpTypeRuntimeArray:
       sub_object_type_id = composite_type_inst.GetSingleWordInOperand(0);
       break;
-    case spv::Op::OpTypeMatrix:
-    case spv::Op::OpTypeVector:
+    case SpvOpTypeMatrix:
+    case SpvOpTypeVector:
       sub_object_type_id = composite_type_inst.GetSingleWordInOperand(0);
       break;
-    case spv::Op::OpTypeStruct: {
+    case SpvOpTypeStruct: {
       auto index_inst = ir_context->get_def_use_mgr()->GetDef(index_id);
-      assert(index_inst->opcode() == spv::Op::OpConstant);
+      assert(index_inst->opcode() == SpvOpConstant);
       assert(ir_context->get_def_use_mgr()
                  ->GetDef(index_inst->type_id())
-                 ->opcode() == spv::Op::OpTypeInt);
+                 ->opcode() == SpvOpTypeInt);
       assert(ir_context->get_def_use_mgr()
                  ->GetDef(index_inst->type_id())
                  ->GetSingleWordInOperand(0) == 32);

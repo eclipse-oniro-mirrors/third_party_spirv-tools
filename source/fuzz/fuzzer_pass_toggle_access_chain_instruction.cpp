@@ -36,9 +36,8 @@ void FuzzerPassToggleAccessChainInstruction::Apply() {
   // probabilistically applied.
   context->module()->ForEachInst([this,
                                   context](opt::Instruction* instruction) {
-    spv::Op opcode = instruction->opcode();
-    if ((opcode == spv::Op::OpAccessChain ||
-         opcode == spv::Op::OpInBoundsAccessChain) &&
+    SpvOp opcode = instruction->opcode();
+    if ((opcode == SpvOpAccessChain || opcode == SpvOpInBoundsAccessChain) &&
         GetFuzzerContext()->ChoosePercentage(
             GetFuzzerContext()->GetChanceOfTogglingAccessChainInstruction())) {
       auto instructionDescriptor =

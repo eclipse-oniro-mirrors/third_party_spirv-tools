@@ -230,8 +230,7 @@ TEST(TransformationReplaceIdWithSynonymTest, IllegalTransformations) {
   // %202 cannot replace %15 as in-operand 0 of %300, since %202 does not
   // dominate %300.
   auto synonym_does_not_dominate_use = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(
-          15, MakeInstructionDescriptor(300, spv::Op::OpIAdd, 0), 0),
+      MakeIdUseDescriptor(15, MakeInstructionDescriptor(300, SpvOpIAdd, 0), 0),
       202);
   ASSERT_FALSE(synonym_does_not_dominate_use.IsApplicable(
       context.get(), transformation_context));
@@ -240,8 +239,8 @@ TEST(TransformationReplaceIdWithSynonymTest, IllegalTransformations) {
   // incoming value for block %72, and %202 does not dominate %72.
   auto synonym_does_not_dominate_use_op_phi =
       TransformationReplaceIdWithSynonym(
-          MakeIdUseDescriptor(
-              15, MakeInstructionDescriptor(301, spv::Op::OpPhi, 0), 2),
+          MakeIdUseDescriptor(15, MakeInstructionDescriptor(301, SpvOpPhi, 0),
+                              2),
           202);
   ASSERT_FALSE(synonym_does_not_dominate_use_op_phi.IsApplicable(
       context.get(), transformation_context));
@@ -249,15 +248,14 @@ TEST(TransformationReplaceIdWithSynonymTest, IllegalTransformations) {
   // %200 is not a synonym for %84
   auto id_in_use_is_not_synonymous = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          84, MakeInstructionDescriptor(67, spv::Op::OpSGreaterThan, 0), 0),
+          84, MakeInstructionDescriptor(67, SpvOpSGreaterThan, 0), 0),
       200);
   ASSERT_FALSE(id_in_use_is_not_synonymous.IsApplicable(
       context.get(), transformation_context));
 
   // %86 is not a synonym for anything (and in particular not for %74)
   auto id_has_no_synonyms = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(86, MakeInstructionDescriptor(84, spv::Op::OpPhi, 0),
-                          2),
+      MakeIdUseDescriptor(86, MakeInstructionDescriptor(84, SpvOpPhi, 0), 2),
       74);
   ASSERT_FALSE(
       id_has_no_synonyms.IsApplicable(context.get(), transformation_context));
@@ -266,7 +264,7 @@ TEST(TransformationReplaceIdWithSynonymTest, IllegalTransformations) {
   auto synonym_use_is_in_synonym_definition =
       TransformationReplaceIdWithSynonym(
           MakeIdUseDescriptor(
-              84, MakeInstructionDescriptor(207, spv::Op::OpCopyObject, 0), 0),
+              84, MakeInstructionDescriptor(207, SpvOpCopyObject, 0), 0),
           207);
   ASSERT_FALSE(synonym_use_is_in_synonym_definition.IsApplicable(
       context.get(), transformation_context));
@@ -275,7 +273,7 @@ TEST(TransformationReplaceIdWithSynonymTest, IllegalTransformations) {
   // definition of %207)
   auto bad_id_use_descriptor = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          84, MakeInstructionDescriptor(200, spv::Op::OpCopyObject, 0), 0),
+          84, MakeInstructionDescriptor(200, SpvOpCopyObject, 0), 0),
       207);
   ASSERT_FALSE(bad_id_use_descriptor.IsApplicable(context.get(),
                                                   transformation_context));
@@ -284,7 +282,7 @@ TEST(TransformationReplaceIdWithSynonymTest, IllegalTransformations) {
   // non-constant index.
   auto bad_access_chain = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          12, MakeInstructionDescriptor(14, spv::Op::OpAccessChain, 0), 1),
+          12, MakeInstructionDescriptor(14, SpvOpAccessChain, 0), 1),
       209);
   ASSERT_FALSE(
       bad_access_chain.IsApplicable(context.get(), transformation_context));
@@ -303,8 +301,7 @@ TEST(TransformationReplaceIdWithSynonymTest, LegalTransformations) {
   SetUpIdSynonyms(transformation_context.GetFactManager());
 
   auto global_constant_synonym = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(
-          19, MakeInstructionDescriptor(47, spv::Op::OpStore, 0), 1),
+      MakeIdUseDescriptor(19, MakeInstructionDescriptor(47, SpvOpStore, 0), 1),
       210);
   uint32_t num_uses_of_original_id_before_replacement =
       context->get_def_use_mgr()->NumUses(19);
@@ -323,7 +320,7 @@ TEST(TransformationReplaceIdWithSynonymTest, LegalTransformations) {
 
   auto replace_vector_access_chain_index = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          54, MakeInstructionDescriptor(55, spv::Op::OpAccessChain, 0), 1),
+          54, MakeInstructionDescriptor(55, SpvOpAccessChain, 0), 1),
       204);
   ASSERT_TRUE(replace_vector_access_chain_index.IsApplicable(
       context.get(), transformation_context));
@@ -336,7 +333,7 @@ TEST(TransformationReplaceIdWithSynonymTest, LegalTransformations) {
   // copied with something that is already a synonym.
   auto regular_replacement = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          15, MakeInstructionDescriptor(202, spv::Op::OpCopyObject, 0), 0),
+          15, MakeInstructionDescriptor(202, SpvOpCopyObject, 0), 0),
       201);
   ASSERT_TRUE(
       regular_replacement.IsApplicable(context.get(), transformation_context));
@@ -346,8 +343,7 @@ TEST(TransformationReplaceIdWithSynonymTest, LegalTransformations) {
                                                kConsoleMessageConsumer));
 
   auto regular_replacement2 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(
-          55, MakeInstructionDescriptor(203, spv::Op::OpStore, 0), 0),
+      MakeIdUseDescriptor(55, MakeInstructionDescriptor(203, SpvOpStore, 0), 0),
       203);
   ASSERT_TRUE(
       regular_replacement2.IsApplicable(context.get(), transformation_context));
@@ -357,8 +353,7 @@ TEST(TransformationReplaceIdWithSynonymTest, LegalTransformations) {
                                                kConsoleMessageConsumer));
 
   auto good_op_phi = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(74, MakeInstructionDescriptor(86, spv::Op::OpPhi, 0),
-                          2),
+      MakeIdUseDescriptor(74, MakeInstructionDescriptor(86, SpvOpPhi, 0), 2),
       205);
   ASSERT_TRUE(good_op_phi.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(good_op_phi, context.get(), &transformation_context);
@@ -548,8 +543,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfVariables) {
   // Replace %10 with %100 in:
   // %11 = OpLoad %6 %10
   auto replacement1 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(10, MakeInstructionDescriptor(11, spv::Op::OpLoad, 0),
-                          0),
+      MakeIdUseDescriptor(10, MakeInstructionDescriptor(11, SpvOpLoad, 0), 0),
       100);
   ASSERT_TRUE(replacement1.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement1, context.get(), &transformation_context);
@@ -559,8 +553,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfVariables) {
   // Replace %8 with %101 in:
   // OpStore %8 %11
   auto replacement2 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(8, MakeInstructionDescriptor(11, spv::Op::OpStore, 0),
-                          0),
+      MakeIdUseDescriptor(8, MakeInstructionDescriptor(11, SpvOpStore, 0), 0),
       101);
   ASSERT_TRUE(replacement2.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement2, context.get(), &transformation_context);
@@ -570,8 +563,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfVariables) {
   // Replace %8 with %101 in:
   // %12 = OpLoad %6 %8
   auto replacement3 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(8, MakeInstructionDescriptor(12, spv::Op::OpLoad, 0),
-                          0),
+      MakeIdUseDescriptor(8, MakeInstructionDescriptor(12, SpvOpLoad, 0), 0),
       101);
   ASSERT_TRUE(replacement3.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement3, context.get(), &transformation_context);
@@ -581,8 +573,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfVariables) {
   // Replace %10 with %100 in:
   // OpStore %10 %12
   auto replacement4 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(
-          10, MakeInstructionDescriptor(12, spv::Op::OpStore, 0), 0),
+      MakeIdUseDescriptor(10, MakeInstructionDescriptor(12, SpvOpStore, 0), 0),
       100);
   ASSERT_TRUE(replacement4.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement4, context.get(), &transformation_context);
@@ -687,7 +678,7 @@ TEST(TransformationReplaceIdWithSynonymTest,
   // %16 = OpFunctionCall %2 %10 %14
   auto replacement = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          14, MakeInstructionDescriptor(16, spv::Op::OpFunctionCall, 0), 1),
+          14, MakeInstructionDescriptor(16, SpvOpFunctionCall, 0), 1),
       100);
   ASSERT_FALSE(replacement.IsApplicable(context.get(), transformation_context));
 }
@@ -880,7 +871,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %16 used for a cannot be replaced
   auto replacement1 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          16, MakeInstructionDescriptor(20, spv::Op::OpAccessChain, 0), 1),
+          16, MakeInstructionDescriptor(20, SpvOpAccessChain, 0), 1),
       100);
   ASSERT_FALSE(
       replacement1.IsApplicable(context.get(), transformation_context));
@@ -890,7 +881,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %16 used for f cannot be replaced
   auto replacement2 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          16, MakeInstructionDescriptor(39, spv::Op::OpAccessChain, 0), 1),
+          16, MakeInstructionDescriptor(39, SpvOpAccessChain, 0), 1),
       100);
   ASSERT_FALSE(
       replacement2.IsApplicable(context.get(), transformation_context));
@@ -900,7 +891,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %16 used for a cannot be replaced
   auto replacement3 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          16, MakeInstructionDescriptor(41, spv::Op::OpAccessChain, 0), 2),
+          16, MakeInstructionDescriptor(41, SpvOpAccessChain, 0), 2),
       100);
   ASSERT_FALSE(
       replacement3.IsApplicable(context.get(), transformation_context));
@@ -910,7 +901,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %16 used for 0 *can* be replaced
   auto replacement4 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          16, MakeInstructionDescriptor(52, spv::Op::OpAccessChain, 0), 1),
+          16, MakeInstructionDescriptor(52, SpvOpAccessChain, 0), 1),
       100);
   ASSERT_TRUE(replacement4.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement4, context.get(), &transformation_context);
@@ -922,7 +913,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %16 used for f cannot be replaced
   auto replacement5 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          16, MakeInstructionDescriptor(52, spv::Op::OpAccessChain, 0), 2),
+          16, MakeInstructionDescriptor(52, SpvOpAccessChain, 0), 2),
       100);
   ASSERT_FALSE(
       replacement5.IsApplicable(context.get(), transformation_context));
@@ -932,7 +923,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %16 used for a cannot be replaced
   auto replacement6 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          16, MakeInstructionDescriptor(53, spv::Op::OpAccessChain, 0), 3),
+          16, MakeInstructionDescriptor(53, SpvOpAccessChain, 0), 3),
       100);
   ASSERT_FALSE(
       replacement6.IsApplicable(context.get(), transformation_context));
@@ -942,7 +933,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %16 used for 0 *can* be replaced
   auto replacement7 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          16, MakeInstructionDescriptor(53, spv::Op::OpAccessChain, 0), 4),
+          16, MakeInstructionDescriptor(53, SpvOpAccessChain, 0), 4),
       100);
   ASSERT_TRUE(replacement7.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement7, context.get(), &transformation_context);
@@ -956,7 +947,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for b cannot be replaced
   auto replacement8 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(24, spv::Op::OpAccessChain, 0), 1),
+          21, MakeInstructionDescriptor(24, SpvOpAccessChain, 0), 1),
       101);
   ASSERT_FALSE(
       replacement8.IsApplicable(context.get(), transformation_context));
@@ -966,7 +957,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for g cannot be replaced
   auto replacement9 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(41, spv::Op::OpAccessChain, 0), 1),
+          21, MakeInstructionDescriptor(41, SpvOpAccessChain, 0), 1),
       101);
   ASSERT_FALSE(
       replacement9.IsApplicable(context.get(), transformation_context));
@@ -976,7 +967,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for 1 *can* be replaced
   auto replacement10 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(41, spv::Op::OpAccessChain, 0), 3),
+          21, MakeInstructionDescriptor(41, SpvOpAccessChain, 0), 3),
       101);
   ASSERT_TRUE(
       replacement10.IsApplicable(context.get(), transformation_context));
@@ -989,7 +980,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for g cannot be replaced
   auto replacement11 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(44, spv::Op::OpAccessChain, 0), 1),
+          21, MakeInstructionDescriptor(44, SpvOpAccessChain, 0), 1),
       101);
   ASSERT_FALSE(
       replacement11.IsApplicable(context.get(), transformation_context));
@@ -999,7 +990,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for b cannot be replaced
   auto replacement12 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(44, spv::Op::OpAccessChain, 0), 2),
+          21, MakeInstructionDescriptor(44, SpvOpAccessChain, 0), 2),
       101);
   ASSERT_FALSE(
       replacement12.IsApplicable(context.get(), transformation_context));
@@ -1009,7 +1000,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for g cannot be replaced
   auto replacement13 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(46, spv::Op::OpAccessChain, 0), 1),
+          21, MakeInstructionDescriptor(46, SpvOpAccessChain, 0), 1),
       101);
   ASSERT_FALSE(
       replacement13.IsApplicable(context.get(), transformation_context));
@@ -1019,7 +1010,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for 1 *can* be replaced
   auto replacement14 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(53, spv::Op::OpAccessChain, 0), 1),
+          21, MakeInstructionDescriptor(53, SpvOpAccessChain, 0), 1),
       101);
   ASSERT_TRUE(
       replacement14.IsApplicable(context.get(), transformation_context));
@@ -1032,7 +1023,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for g cannot be replaced
   auto replacement15 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(53, spv::Op::OpAccessChain, 0), 2),
+          21, MakeInstructionDescriptor(53, SpvOpAccessChain, 0), 2),
       101);
   ASSERT_FALSE(
       replacement15.IsApplicable(context.get(), transformation_context));
@@ -1042,7 +1033,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for g cannot be replaced
   auto replacement16 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(56, spv::Op::OpAccessChain, 0), 2),
+          21, MakeInstructionDescriptor(56, SpvOpAccessChain, 0), 2),
       101);
   ASSERT_FALSE(
       replacement16.IsApplicable(context.get(), transformation_context));
@@ -1052,7 +1043,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for b cannot be replaced
   auto replacement17 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(56, spv::Op::OpAccessChain, 0), 3),
+          21, MakeInstructionDescriptor(56, SpvOpAccessChain, 0), 3),
       101);
   ASSERT_FALSE(
       replacement17.IsApplicable(context.get(), transformation_context));
@@ -1062,8 +1053,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %24 used for g cannot be replaced
   auto replacement18 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          21, MakeInstructionDescriptor(58, spv::Op::OpInBoundsAccessChain, 0),
-          2),
+          21, MakeInstructionDescriptor(58, SpvOpInBoundsAccessChain, 0), 2),
       101);
   ASSERT_FALSE(
       replacement18.IsApplicable(context.get(), transformation_context));
@@ -1075,7 +1065,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %17 used for 2 *can* be replaced
   auto replacement19 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          17, MakeInstructionDescriptor(20, spv::Op::OpAccessChain, 0), 2),
+          17, MakeInstructionDescriptor(20, SpvOpAccessChain, 0), 2),
       102);
   ASSERT_TRUE(
       replacement19.IsApplicable(context.get(), transformation_context));
@@ -1088,7 +1078,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %17 used for c cannot be replaced
   auto replacement20 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          17, MakeInstructionDescriptor(27, spv::Op::OpAccessChain, 0), 1),
+          17, MakeInstructionDescriptor(27, SpvOpAccessChain, 0), 1),
       102);
   ASSERT_FALSE(
       replacement20.IsApplicable(context.get(), transformation_context));
@@ -1098,7 +1088,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %17 used for c cannot be replaced
   auto replacement21 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          17, MakeInstructionDescriptor(46, spv::Op::OpAccessChain, 0), 2),
+          17, MakeInstructionDescriptor(46, SpvOpAccessChain, 0), 2),
       102);
   ASSERT_FALSE(
       replacement21.IsApplicable(context.get(), transformation_context));
@@ -1108,7 +1098,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %17 used for 2 *can* be replaced
   auto replacement22 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          17, MakeInstructionDescriptor(56, spv::Op::OpAccessChain, 0), 1),
+          17, MakeInstructionDescriptor(56, SpvOpAccessChain, 0), 1),
       102);
   ASSERT_TRUE(
       replacement22.IsApplicable(context.get(), transformation_context));
@@ -1121,8 +1111,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %17 used for c cannot be replaced
   auto replacement23 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          17, MakeInstructionDescriptor(58, spv::Op::OpInBoundsAccessChain, 0),
-          3),
+          17, MakeInstructionDescriptor(58, SpvOpInBoundsAccessChain, 0), 3),
       102);
   ASSERT_FALSE(
       replacement23.IsApplicable(context.get(), transformation_context));
@@ -1134,8 +1123,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %57 used for 3 *can* be replaced
   auto replacement24 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          57, MakeInstructionDescriptor(58, spv::Op::OpInBoundsAccessChain, 0),
-          1),
+          57, MakeInstructionDescriptor(58, SpvOpInBoundsAccessChain, 0), 1),
       103);
   ASSERT_TRUE(
       replacement24.IsApplicable(context.get(), transformation_context));
@@ -1150,7 +1138,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %32 used for 17 *can* be replaced
   auto replacement25 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          32, MakeInstructionDescriptor(34, spv::Op::OpAccessChain, 0), 1),
+          32, MakeInstructionDescriptor(34, SpvOpAccessChain, 0), 1),
       106);
   ASSERT_TRUE(
       replacement25.IsApplicable(context.get(), transformation_context));
@@ -1165,7 +1153,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %43 used for 0 *can* be replaced
   auto replacement26 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          43, MakeInstructionDescriptor(44, spv::Op::OpAccessChain, 0), 3),
+          43, MakeInstructionDescriptor(44, SpvOpAccessChain, 0), 3),
       107);
   ASSERT_TRUE(
       replacement26.IsApplicable(context.get(), transformation_context));
@@ -1180,7 +1168,7 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // The index %55 used for 1 *can* be replaced
   auto replacement27 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          55, MakeInstructionDescriptor(56, spv::Op::OpAccessChain, 0), 4),
+          55, MakeInstructionDescriptor(56, SpvOpAccessChain, 0), 4),
       108);
   ASSERT_TRUE(
       replacement27.IsApplicable(context.get(), transformation_context));
@@ -1194,8 +1182,8 @@ TEST(TransformationReplaceIdWithSynonymTest, SynonymsOfAccessChainIndices) {
   // Corresponds to d.b[*3*]
   // The index %8 used for 3 *can* be replaced
   auto replacement28 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(
-          8, MakeInstructionDescriptor(24, spv::Op::OpAccessChain, 0), 2),
+      MakeIdUseDescriptor(8, MakeInstructionDescriptor(24, SpvOpAccessChain, 0),
+                          2),
       109);
   ASSERT_TRUE(
       replacement28.IsApplicable(context.get(), transformation_context));
@@ -1368,14 +1356,14 @@ TEST(TransformationReplaceIdWithSynonymTest, RuntimeArrayTest) {
   ASSERT_FALSE(
       TransformationReplaceIdWithSynonym(
           MakeIdUseDescriptor(
-              12, MakeInstructionDescriptor(16, spv::Op::OpAccessChain, 0), 1),
+              12, MakeInstructionDescriptor(16, SpvOpAccessChain, 0), 1),
           50)
           .IsApplicable(context.get(), transformation_context));
 
   // Fine to replace an index into a runtime array.
   auto replacement1 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          12, MakeInstructionDescriptor(16, spv::Op::OpAccessChain, 0), 2),
+          12, MakeInstructionDescriptor(16, SpvOpAccessChain, 0), 2),
       50);
   ASSERT_TRUE(replacement1.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement1, context.get(), &transformation_context);
@@ -1383,7 +1371,7 @@ TEST(TransformationReplaceIdWithSynonymTest, RuntimeArrayTest) {
   // Fine to replace an index into a vector inside the runtime array.
   auto replacement2 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          14, MakeInstructionDescriptor(16, spv::Op::OpAccessChain, 0), 3),
+          14, MakeInstructionDescriptor(16, SpvOpAccessChain, 0), 3),
       51);
   ASSERT_TRUE(replacement2.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement2, context.get(), &transformation_context);
@@ -1478,8 +1466,7 @@ TEST(TransformationReplaceIdWithSynonymTest,
   ASSERT_FALSE(
       TransformationReplaceIdWithSynonym(
           MakeIdUseDescriptor(
-              9, MakeInstructionDescriptor(20, spv::Op::OpImageTexelPointer, 0),
-              2),
+              9, MakeInstructionDescriptor(20, SpvOpImageTexelPointer, 0), 2),
           100)
           .IsApplicable(context.get(), transformation_context));
 }
@@ -1537,61 +1524,56 @@ TEST(TransformationReplaceIdWithSynonymTest, EquivalentIntegerConstants) {
 
   // Legal because OpSNegate always considers the integer as signed
   auto replacement1 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(
-          10, MakeInstructionDescriptor(15, spv::Op::OpSNegate, 0), 0),
+      MakeIdUseDescriptor(10, MakeInstructionDescriptor(15, SpvOpSNegate, 0),
+                          0),
       13);
   ASSERT_TRUE(replacement1.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement1, context.get(), &transformation_context);
 
   // Legal because OpIAdd does not care about the signedness of the operands
   auto replacement2 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(10, MakeInstructionDescriptor(16, spv::Op::OpIAdd, 0),
-                          0),
+      MakeIdUseDescriptor(10, MakeInstructionDescriptor(16, SpvOpIAdd, 0), 0),
       13);
   ASSERT_TRUE(replacement2.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement2, context.get(), &transformation_context);
 
   // Legal because OpSDiv does not care about the signedness of the operands
   auto replacement3 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(10, MakeInstructionDescriptor(17, spv::Op::OpSDiv, 0),
-                          0),
+      MakeIdUseDescriptor(10, MakeInstructionDescriptor(17, SpvOpSDiv, 0), 0),
       13);
   ASSERT_TRUE(replacement3.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement3, context.get(), &transformation_context);
 
   // Not legal because OpUDiv requires unsigned integers
-  ASSERT_FALSE(
-      TransformationReplaceIdWithSynonym(
-          MakeIdUseDescriptor(
-              13, MakeInstructionDescriptor(18, spv::Op::OpUDiv, 0), 0),
-          10)
-          .IsApplicable(context.get(), transformation_context));
+  ASSERT_FALSE(TransformationReplaceIdWithSynonym(
+                   MakeIdUseDescriptor(
+                       13, MakeInstructionDescriptor(18, SpvOpUDiv, 0), 0),
+                   10)
+                   .IsApplicable(context.get(), transformation_context));
 
   // Legal because OpSDiv does not care about the signedness of the operands
   auto replacement4 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(
-          10, MakeInstructionDescriptor(19, spv::Op::OpBitwiseAnd, 0), 0),
+      MakeIdUseDescriptor(10, MakeInstructionDescriptor(19, SpvOpBitwiseAnd, 0),
+                          0),
       13);
   ASSERT_TRUE(replacement4.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement4, context.get(), &transformation_context);
 
   // Not legal because OpSelect requires both operands to have the same type as
   // the result type
-  ASSERT_FALSE(
-      TransformationReplaceIdWithSynonym(
-          MakeIdUseDescriptor(
-              10, MakeInstructionDescriptor(20, spv::Op::OpUDiv, 0), 1),
-          13)
-          .IsApplicable(context.get(), transformation_context));
+  ASSERT_FALSE(TransformationReplaceIdWithSynonym(
+                   MakeIdUseDescriptor(
+                       10, MakeInstructionDescriptor(20, SpvOpUDiv, 0), 1),
+                   13)
+                   .IsApplicable(context.get(), transformation_context));
 
   // Not legal because OpStore requires the object to match the type pointed
   // to by the pointer.
-  ASSERT_FALSE(
-      TransformationReplaceIdWithSynonym(
-          MakeIdUseDescriptor(
-              10, MakeInstructionDescriptor(21, spv::Op::OpStore, 0), 1),
-          13)
-          .IsApplicable(context.get(), transformation_context));
+  ASSERT_FALSE(TransformationReplaceIdWithSynonym(
+                   MakeIdUseDescriptor(
+                       10, MakeInstructionDescriptor(21, SpvOpStore, 0), 1),
+                   13)
+                   .IsApplicable(context.get(), transformation_context));
 
   ASSERT_TRUE(fuzzerutil::IsValidAndWellFormed(context.get(), validator_options,
                                                kConsoleMessageConsumer));
@@ -1686,20 +1668,18 @@ TEST(TransformationReplaceIdWithSynonymTest, EquivalentIntegerVectorConstants) {
 
   // Legal because OpIAdd does not consider the signedness of the operands
   auto replacement1 = TransformationReplaceIdWithSynonym(
-      MakeIdUseDescriptor(14, MakeInstructionDescriptor(18, spv::Op::OpIAdd, 0),
-                          0),
+      MakeIdUseDescriptor(14, MakeInstructionDescriptor(18, SpvOpIAdd, 0), 0),
       15);
   ASSERT_TRUE(replacement1.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement1, context.get(), &transformation_context);
 
   // Not legal because OpStore requires the object to match the type pointed
   // to by the pointer.
-  ASSERT_FALSE(
-      TransformationReplaceIdWithSynonym(
-          MakeIdUseDescriptor(
-              14, MakeInstructionDescriptor(18, spv::Op::OpStore, 0), 1),
-          15)
-          .IsApplicable(context.get(), transformation_context));
+  ASSERT_FALSE(TransformationReplaceIdWithSynonym(
+                   MakeIdUseDescriptor(
+                       14, MakeInstructionDescriptor(18, SpvOpStore, 0), 1),
+                   15)
+                   .IsApplicable(context.get(), transformation_context));
 
   // Add synonym fact relating %12 and %13 (equivalent integer constants with
   // different signedness).
@@ -1709,7 +1689,7 @@ TEST(TransformationReplaceIdWithSynonymTest, EquivalentIntegerVectorConstants) {
   // Legal because the indices of OpAccessChain are always treated as signed
   auto replacement2 = TransformationReplaceIdWithSynonym(
       MakeIdUseDescriptor(
-          13, MakeInstructionDescriptor(19, spv::Op::OpAccessChain, 0), 1),
+          13, MakeInstructionDescriptor(19, SpvOpAccessChain, 0), 1),
       12);
   ASSERT_TRUE(replacement2.IsApplicable(context.get(), transformation_context));
   ApplyAndCheckFreshIds(replacement2, context.get(), &transformation_context);

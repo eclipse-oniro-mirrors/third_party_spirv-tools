@@ -28,6 +28,8 @@ namespace {
 using ::testing::HasSubstr;
 using ::testing::Values;
 using ValidateStorage = spvtest::ValidateBase<std::string>;
+using ValidateStorageClass =
+    spvtest::ValidateBase<std::tuple<std::string, bool, bool, std::string>>;
 using ValidateStorageExecutionModel = spvtest::ValidateBase<std::string>;
 
 TEST_F(ValidateStorage, FunctionStorageInsideFunction) {

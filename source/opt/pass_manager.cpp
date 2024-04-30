@@ -18,8 +18,8 @@
 #include <string>
 #include <vector>
 
-#include "third_party/spirv-tools/source/opt/ir_context.h"
-#include "third_party/spirv-tools/source/util/timer.h"
+#include "source/opt/ir_context.h"
+#include "source/util/timer.h"
 #include "spirv-tools/libspirv.hpp"
 
 namespace spvtools {

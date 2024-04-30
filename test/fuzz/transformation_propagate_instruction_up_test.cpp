@@ -699,7 +699,7 @@ TEST(TransformationPropagateInstructionUpTest,
   ASSERT_FALSE(
       transformation.IsApplicable(context.get(), transformation_context));
 
-  context->AddCapability(spv::Capability::VariablePointers);
+  context->AddCapability(SpvCapabilityVariablePointers);
 
   ASSERT_TRUE(
       transformation.IsApplicable(context.get(), transformation_context));
@@ -779,7 +779,7 @@ TEST(TransformationPropagateInstructionUpTest,
   ASSERT_FALSE(
       transformation.IsApplicable(context.get(), transformation_context));
 
-  context->AddCapability(spv::Capability::VariablePointersStorageBuffer);
+  context->AddCapability(SpvCapabilityVariablePointersStorageBuffer);
 
   ASSERT_TRUE(
       transformation.IsApplicable(context.get(), transformation_context));

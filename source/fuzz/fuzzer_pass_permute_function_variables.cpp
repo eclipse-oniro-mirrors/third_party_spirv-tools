@@ -47,7 +47,7 @@ void FuzzerPassPermuteFunctionVariables::Apply() {
 
     std::vector<opt::Instruction*> variables;
     for (auto& instruction : *first_block) {
-      if (instruction.opcode() == spv::Op::OpVariable) {
+      if (instruction.opcode() == SpvOpVariable) {
         variables.push_back(&instruction);
       }
     }

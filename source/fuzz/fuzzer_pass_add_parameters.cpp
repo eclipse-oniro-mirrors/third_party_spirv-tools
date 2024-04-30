@@ -79,7 +79,7 @@ void FuzzerPassAddParameters::Apply() {
         auto storage_class = fuzzerutil::GetStorageClassFromPointerType(
             GetIRContext(), current_type_id);
         switch (storage_class) {
-          case spv::StorageClass::Function: {
+          case SpvStorageClassFunction: {
             // In every caller find or create a local variable that has the
             // selected type.
             for (auto* instr :
@@ -91,8 +91,8 @@ void FuzzerPassAddParameters::Apply() {
               call_parameter_ids[instr->result_id()] = variable_id;
             }
           } break;
-          case spv::StorageClass::Private:
-          case spv::StorageClass::Workgroup: {
+          case SpvStorageClassPrivate:
+          case SpvStorageClassWorkgroup: {
             // If there exists at least one caller, find or create a global
             // variable that has the selected type.
             std::vector<opt::Instruction*> callers =
