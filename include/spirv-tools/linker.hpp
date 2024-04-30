@@ -26,6 +26,11 @@ namespace spvtools {
 
 class LinkerOptions {
  public:
+  LinkerOptions()
+      : create_library_(false),
+        verify_ids_(false),
+        allow_partial_linkage_(false) {}
+
   // Returns whether a library or an executable should be produced by the
   // linking phase.
   //
@@ -58,16 +63,10 @@ class LinkerOptions {
     allow_partial_linkage_ = allow_partial_linkage;
   }
 
-  bool GetUseHighestVersion() const { return use_highest_version_; }
-  void SetUseHighestVersion(bool use_highest_vers) {
-    use_highest_version_ = use_highest_vers;
-  }
-
  private:
-  bool create_library_{false};
-  bool verify_ids_{false};
-  bool allow_partial_linkage_{false};
-  bool use_highest_version_{false};
+  bool create_library_;
+  bool verify_ids_;
+  bool allow_partial_linkage_;
 };
 
 // Links one or more SPIR-V modules into a new SPIR-V module. That is, combine

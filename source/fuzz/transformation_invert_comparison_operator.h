@@ -50,11 +50,11 @@ class TransformationInvertComparisonOperator : public Transformation {
   protobufs::Transformation ToMessage() const override;
 
   // Returns true if |opcode| is supported by this transformation.
-  static bool IsInversionSupported(spv::Op opcode);
+  static bool IsInversionSupported(SpvOp opcode);
 
  private:
   // Returns an inverted |opcode| (e.g. < becomes >=, == becomes != etc.)
-  static spv::Op InvertOpcode(spv::Op opcode);
+  static SpvOp InvertOpcode(SpvOp opcode);
 
   protobufs::TransformationInvertComparisonOperator message_;
 };

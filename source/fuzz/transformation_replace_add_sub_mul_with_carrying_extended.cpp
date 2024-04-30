@@ -97,20 +97,20 @@ void TransformationReplaceAddSubMulWithCarryingExtended::Apply(
 
   // Determine the opcode of the new instruction that computes the result into a
   // struct.
-  spv::Op new_instruction_opcode;
+  SpvOp new_instruction_opcode;
 
   switch (original_instruction->opcode()) {
-    case spv::Op::OpIAdd:
-      new_instruction_opcode = spv::Op::OpIAddCarry;
+    case SpvOpIAdd:
+      new_instruction_opcode = SpvOpIAddCarry;
       break;
-    case spv::Op::OpISub:
-      new_instruction_opcode = spv::Op::OpISubBorrow;
+    case SpvOpISub:
+      new_instruction_opcode = SpvOpISubBorrow;
       break;
-    case spv::Op::OpIMul:
+    case SpvOpIMul:
       if (!operand_is_signed) {
-        new_instruction_opcode = spv::Op::OpUMulExtended;
+        new_instruction_opcode = SpvOpUMulExtended;
       } else {
-        new_instruction_opcode = spv::Op::OpSMulExtended;
+        new_instruction_opcode = SpvOpSMulExtended;
       }
       break;
     default:
@@ -148,7 +148,7 @@ void TransformationReplaceAddSubMulWithCarryingExtended::Apply(
   // takes the first component of the struct which represents low-order bits of
   // the operation. This is the original result.
   original_instruction->InsertBefore(MakeUnique<opt::Instruction>(
-      ir_context, spv::Op::OpCompositeExtract, original_instruction->type_id(),
+      ir_context, SpvOpCompositeExtract, original_instruction->type_id(),
       message_.result_id(),
       opt::Instruction::OperandList(
           {{SPV_OPERAND_TYPE_ID, {message_.struct_fresh_id()}},
@@ -168,9 +168,9 @@ bool TransformationReplaceAddSubMulWithCarryingExtended::IsInstructionSuitable(
 
   // Only instructions OpIAdd, OpISub, OpIMul are supported.
   switch (instruction_opcode) {
-    case spv::Op::OpIAdd:
-    case spv::Op::OpISub:
-    case spv::Op::OpIMul:
+    case SpvOpIAdd:
+    case SpvOpISub:
+    case SpvOpIMul:
       break;
     default:
       return false;
@@ -201,8 +201,8 @@ bool TransformationReplaceAddSubMulWithCarryingExtended::IsInstructionSuitable(
   auto type = ir_context->get_type_mgr()->GetType(instruction.type_id());
 
   switch (instruction_opcode) {
-    case spv::Op::OpIAdd:
-    case spv::Op::OpISub: {
+    case SpvOpIAdd:
+    case SpvOpISub: {
       // In case of OpIAdd and OpISub if the operand is a vector, the component
       // type must be unsigned. Otherwise (if the operand is an int), the
       // operand must be unsigned.

@@ -34,7 +34,7 @@ void FuzzerPassAdjustLoopControls::Apply() {
     for (auto& block : function) {
       if (auto merge_inst = block.GetMergeInst()) {
         // Ignore the instruction if it is not a loop merge.
-        if (merge_inst->opcode() != spv::Op::OpLoopMerge) {
+        if (merge_inst->opcode() != SpvOpLoopMerge) {
           continue;
         }
 
@@ -48,10 +48,9 @@ void FuzzerPassAdjustLoopControls::Apply() {
             TransformationSetLoopControl::kLoopControlMaskInOperandIndex);
 
         // First, set the new mask to one of None, Unroll or DontUnroll.
-        std::vector<uint32_t> basic_masks = {
-            uint32_t(spv::LoopControlMask::MaskNone),
-            uint32_t(spv::LoopControlMask::Unroll),
-            uint32_t(spv::LoopControlMask::DontUnroll)};
+        std::vector<uint32_t> basic_masks = {SpvLoopControlMaskNone,
+                                             SpvLoopControlUnrollMask,
+                                             SpvLoopControlDontUnrollMask};
         uint32_t new_mask =
             basic_masks[GetFuzzerContext()->RandomIndex(basic_masks)];
 
@@ -59,20 +58,19 @@ void FuzzerPassAdjustLoopControls::Apply() {
         // does, check which of these were present in the existing mask and
         // randomly decide whether to keep them.  They are just hints, so
         // removing them should not change the semantics of the module.
-        for (auto mask_bit : {spv::LoopControlMask::DependencyInfinite,
-                              spv::LoopControlMask::DependencyLength,
-                              spv::LoopControlMask::MinIterations,
-                              spv::LoopControlMask::MaxIterations,
-                              spv::LoopControlMask::IterationMultiple}) {
-          if ((existing_mask & uint32_t(mask_bit)) &&
-              GetFuzzerContext()->ChooseEven()) {
+        for (auto mask_bit :
+             {SpvLoopControlDependencyInfiniteMask,
+              SpvLoopControlDependencyLengthMask,
+              SpvLoopControlMinIterationsMask, SpvLoopControlMaxIterationsMask,
+              SpvLoopControlIterationMultipleMask}) {
+          if ((existing_mask & mask_bit) && GetFuzzerContext()->ChooseEven()) {
             // The mask bits we are considering are not available in all SPIR-V
             // versions.  However, we only include a mask bit if it was present
             // in the original loop control mask, and we work under the
             // assumption that we are transforming a valid module, thus we don't
             // need to actually check whether the SPIR-V version being used
             // supports these loop control mask bits.
-            new_mask |= uint32_t(mask_bit);
+            new_mask |= mask_bit;
           }
         }
 
@@ -83,14 +81,14 @@ void FuzzerPassAdjustLoopControls::Apply() {
 
         // PeelCount and PartialCount are not compatible with DontUnroll, so
         // we check whether DontUnroll is set.
-        if (!(new_mask & uint32_t(spv::LoopControlMask::DontUnroll))) {
+        if (!(new_mask & SpvLoopControlDontUnrollMask)) {
           // If PeelCount is supported by this SPIR-V version, randomly choose
           // whether to set it.  If it was set in the original mask and is not
           // selected for setting here, that amounts to dropping it.
           if (TransformationSetLoopControl::PeelCountIsSupported(
                   GetIRContext()) &&
               GetFuzzerContext()->ChooseEven()) {
-            new_mask |= uint32_t(spv::LoopControlMask::PeelCount);
+            new_mask |= SpvLoopControlPeelCountMask;
             // The peel count is chosen randomly - if PeelCount was already set
             // this will overwrite whatever peel count was previously used.
             peel_count = GetFuzzerContext()->GetRandomLoopControlPeelCount();
@@ -99,7 +97,7 @@ void FuzzerPassAdjustLoopControls::Apply() {
           if (TransformationSetLoopControl::PartialCountIsSupported(
                   GetIRContext()) &&
               GetFuzzerContext()->ChooseEven()) {
-            new_mask |= uint32_t(spv::LoopControlMask::PartialCount);
+            new_mask |= SpvLoopControlPartialCountMask;
             partial_count =
                 GetFuzzerContext()->GetRandomLoopControlPartialCount();
           }

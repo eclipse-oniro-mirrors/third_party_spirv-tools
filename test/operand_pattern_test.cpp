@@ -103,18 +103,17 @@ INSTANTIATE_TEST_SUITE_P(
          {PREFIX1}},
         // Volatile has no operands.
         {SPV_OPERAND_TYPE_OPTIONAL_MEMORY_ACCESS,
-         uint32_t(spv::MemoryAccessMask::Volatile),
+         SpvMemoryAccessVolatileMask,
          {PREFIX0},
          {PREFIX0}},
         // Aligned has one literal number operand.
         {SPV_OPERAND_TYPE_OPTIONAL_MEMORY_ACCESS,
-         uint32_t(spv::MemoryAccessMask::Aligned),
+         SpvMemoryAccessAlignedMask,
          {PREFIX1},
          {PREFIX1, SPV_OPERAND_TYPE_LITERAL_INTEGER}},
         // Volatile with Aligned still has just one literal number operand.
         {SPV_OPERAND_TYPE_OPTIONAL_MEMORY_ACCESS,
-         uint32_t(spv::MemoryAccessMask::Volatile |
-                  spv::MemoryAccessMask::Aligned),
+         SpvMemoryAccessVolatileMask | SpvMemoryAccessAlignedMask,
          {PREFIX1},
          {PREFIX1, SPV_OPERAND_TYPE_LITERAL_INTEGER}},
         // Newer masks are not tested

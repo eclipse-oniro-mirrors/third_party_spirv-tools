@@ -34,26 +34,26 @@ class EntryPointsAmountTest : public spvtest::LinkerTest {
 
     spvtest::Binary common_binary = {
         // clang-format off
-        static_cast<uint32_t>(spv::MagicNumber),
-        static_cast<uint32_t>(spv::Version),
+        SpvMagicNumber,
+        SpvVersion,
         SPV_GENERATOR_WORD(SPV_GENERATOR_KHRONOS, 0),
         3u + global_variable_count_per_binary,  // NOTE: Bound
         0u,                                     // NOTE: Schema; reserved
 
-        static_cast<uint32_t>(spv::Op::OpCapability) | 2u << spv::WordCountShift,
-        static_cast<uint32_t>(spv::Capability::Shader),
+        SpvOpCapability | 2u << SpvWordCountShift,
+        SpvCapabilityShader,
 
-        static_cast<uint32_t>(spv::Op::OpMemoryModel) | 3u << spv::WordCountShift,
-        static_cast<uint32_t>(spv::AddressingModel::Logical),
-        static_cast<uint32_t>(spv::MemoryModel::Simple),
+        SpvOpMemoryModel | 3u << SpvWordCountShift,
+        SpvAddressingModelLogical,
+        SpvMemoryModelSimple,
 
-        static_cast<uint32_t>(spv::Op::OpTypeFloat) | 3u << spv::WordCountShift,
+        SpvOpTypeFloat | 3u << SpvWordCountShift,
         1u,   // NOTE: Result ID
         32u,  // NOTE: Width
 
-        static_cast<uint32_t>(spv::Op::OpTypePointer) | 4u << spv::WordCountShift,
+        SpvOpTypePointer | 4u << SpvWordCountShift,
         2u,  // NOTE: Result ID
-        static_cast<uint32_t>(spv::StorageClass::Input),
+        SpvStorageClassInput,
         1u  // NOTE: Type ID
         // clang-format on
     };
@@ -64,11 +64,10 @@ class EntryPointsAmountTest : public spvtest::LinkerTest {
     binary.insert(binary.end(), common_binary.cbegin(), common_binary.cend());
 
     for (uint32_t i = 0u; i < global_variable_count_per_binary; ++i) {
-      binary.push_back(static_cast<uint32_t>(spv::Op::OpVariable) |
-                       4u << spv::WordCountShift);
+      binary.push_back(SpvOpVariable | 4u << SpvWordCountShift);
       binary.push_back(2u);      // NOTE: Type ID
       binary.push_back(3u + i);  // NOTE: Result ID
-      binary.push_back(static_cast<uint32_t>(spv::StorageClass::Input));
+      binary.push_back(SpvStorageClassInput);
     }
 
     for (uint32_t i = 0u; i < binary_count - 1u; ++i) {
@@ -90,37 +89,37 @@ TEST_F(EntryPointsAmountTest, UnderLimit) {
 TEST_F(EntryPointsAmountTest, OverLimit) {
   binaries.push_back({
       // clang-format off
-      static_cast<uint32_t>(spv::MagicNumber),
-      static_cast<uint32_t>(spv::Version),
+      SpvMagicNumber,
+      SpvVersion,
       SPV_GENERATOR_WORD(SPV_GENERATOR_KHRONOS, 0),
       5u,  // NOTE: Bound
       0u,  // NOTE: Schema; reserved
 
-      static_cast<uint32_t>(spv::Op::OpCapability) | 2u << spv::WordCountShift,
-      static_cast<uint32_t>(spv::Capability::Shader),
+      SpvOpCapability | 2u << SpvWordCountShift,
+      SpvCapabilityShader,
 
-      static_cast<uint32_t>(spv::Op::OpMemoryModel) | 3u << spv::WordCountShift,
-      static_cast<uint32_t>(spv::AddressingModel::Logical),
-      static_cast<uint32_t>(spv::MemoryModel::Simple),
+      SpvOpMemoryModel | 3u << SpvWordCountShift,
+      SpvAddressingModelLogical,
+      SpvMemoryModelSimple,
 
-      static_cast<uint32_t>(spv::Op::OpTypeFloat) | 3u << spv::WordCountShift,
+      SpvOpTypeFloat | 3u << SpvWordCountShift,
       1u,   // NOTE: Result ID
       32u,  // NOTE: Width
 
-      static_cast<uint32_t>(spv::Op::OpTypePointer) | 4u << spv::WordCountShift,
+      SpvOpTypePointer | 4u << SpvWordCountShift,
       2u,  // NOTE: Result ID
-      static_cast<uint32_t>(spv::StorageClass::Input),
+      SpvStorageClassInput,
       1u,  // NOTE: Type ID
 
-      static_cast<uint32_t>(spv::Op::OpVariable) | 4u << spv::WordCountShift,
+      SpvOpVariable | 4u << SpvWordCountShift,
       2u,  // NOTE: Type ID
       3u,  // NOTE: Result ID
-      static_cast<uint32_t>(spv::StorageClass::Input),
+      SpvStorageClassInput,
 
-      static_cast<uint32_t>(spv::Op::OpVariable) | 4u << spv::WordCountShift,
+      SpvOpVariable | 4u << SpvWordCountShift,
       2u,  // NOTE: Type ID
       4u,  // NOTE: Result ID
-      static_cast<uint32_t>(spv::StorageClass::Input)
+      SpvStorageClassInput
       // clang-format on
   });
 

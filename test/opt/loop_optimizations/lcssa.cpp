@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "effcee/effcee.h"
@@ -20,6 +21,7 @@
 #include "source/opt/build_module.h"
 #include "source/opt/loop_descriptor.h"
 #include "source/opt/loop_utils.h"
+#include "source/opt/pass.h"
 #include "test/opt//assembly_builder.h"
 #include "test/opt/function_utils.h"
 

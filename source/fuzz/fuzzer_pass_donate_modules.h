@@ -45,8 +45,7 @@ class FuzzerPassDonateModules : public FuzzerPass {
  private:
   // Adapts a storage class coming from a donor module so that it will work
   // in a recipient module, e.g. by changing Uniform to Private.
-  static spv::StorageClass AdaptStorageClass(
-      spv::StorageClass donor_storage_class);
+  static SpvStorageClass AdaptStorageClass(SpvStorageClass donor_storage_class);
 
   // Identifies all external instruction set imports in |donor_ir_context| and
   // populates |original_id_to_donated_id| with a mapping from the donor's id

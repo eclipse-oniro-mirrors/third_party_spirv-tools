@@ -52,7 +52,7 @@ void FuzzerPassReplaceOpSelectsWithConditionalBranches::Apply() {
 
       for (auto& instruction : block) {
         // We only care about OpSelect instructions.
-        if (instruction.opcode() != spv::Op::OpSelect) {
+        if (instruction.opcode() != SpvOpSelect) {
           continue;
         }
 
@@ -69,7 +69,7 @@ void FuzzerPassReplaceOpSelectsWithConditionalBranches::Apply() {
                 ->get_def_use_mgr()
                 ->GetDef(fuzzerutil::GetTypeId(
                     GetIRContext(), instruction.GetSingleWordInOperand(0)))
-                ->opcode() != spv::Op::OpTypeBool) {
+                ->opcode() != SpvOpTypeBool) {
           continue;
         }
 
@@ -136,7 +136,7 @@ void FuzzerPassReplaceOpSelectsWithConditionalBranches::Apply() {
 
 bool FuzzerPassReplaceOpSelectsWithConditionalBranches::
     InstructionNeedsSplitBefore(opt::Instruction* instruction) {
-  assert(instruction && instruction->opcode() == spv::Op::OpSelect &&
+  assert(instruction && instruction->opcode() == SpvOpSelect &&
          "The instruction must be OpSelect.");
 
   auto block = GetIRContext()->get_instr_block(instruction);
@@ -163,7 +163,7 @@ bool FuzzerPassReplaceOpSelectsWithConditionalBranches::
   auto predecessor = GetIRContext()->get_instr_block(
       GetIRContext()->cfg()->preds(block->id())[0]);
   return predecessor->MergeBlockIdIfAny() ||
-         predecessor->terminator()->opcode() != spv::Op::OpBranch;
+         predecessor->terminator()->opcode() != SpvOpBranch;
 }
 
 }  // namespace fuzz

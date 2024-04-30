@@ -14,7 +14,9 @@
 
 #include <string>
 
+#include "gmock/gmock.h"
 #include "spirv-tools/libspirv.hpp"
+#include "spirv-tools/optimizer.hpp"
 #include "test/opt/pass_fixture.h"
 #include "test/opt/pass_utils.h"
 

@@ -41,9 +41,8 @@ AUTHORS = ['The Khronos Group Inc.',
            'Alastair F. Donaldson',
            'Mostafa Ashraf',
            'Shiyu Liu',
-           'ZHOU He',
-           'Nintendo']
-CURRENT_YEAR = 2023
+           'ZHOU He']
+CURRENT_YEAR = 2022
 
 FIRST_YEAR = 2014
 FINAL_YEAR = CURRENT_YEAR + 5

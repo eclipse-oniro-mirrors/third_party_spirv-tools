@@ -14,6 +14,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -243,10 +244,10 @@ TEST(IrBuilder, DistributeLineDebugInfo) {
     auto& lines = def_use_mgr->GetDef(check.id)->dbg_line_insts();
     for (uint32_t i = 0; i < check.line_numbers.size(); ++i) {
       if (check.line_numbers[i] == kNoLine) {
-        EXPECT_EQ(lines[i].opcode(), spv::Op::OpNoLine);
+        EXPECT_EQ(lines[i].opcode(), SpvOpNoLine);
         continue;
       }
-      EXPECT_EQ(lines[i].opcode(), spv::Op::OpLine);
+      EXPECT_EQ(lines[i].opcode(), SpvOpLine);
       EXPECT_EQ(lines[i].GetSingleWordOperand(kOpLineOperandLineIndex),
                 check.line_numbers[i]);
     }
@@ -285,10 +286,9 @@ OpFunctionEnd
   spvtools::opt::analysis::DefUseManager* def_use_mgr =
       context->get_def_use_mgr();
 
-  std::vector<spv::Op> opcodes;
+  std::vector<SpvOp> opcodes;
   for (auto* inst = def_use_mgr->GetDef(1);
-       inst && (inst->opcode() != spv::Op::OpFunctionEnd);
-       inst = inst->NextNode()) {
+       inst && (inst->opcode() != SpvOpFunctionEnd); inst = inst->NextNode()) {
     inst->ForEachInst(
         [&opcodes](spvtools::opt::Instruction* sub_inst) {
           opcodes.push_back(sub_inst->opcode());
@@ -296,9 +296,9 @@ OpFunctionEnd
         true);
   }
 
-  EXPECT_THAT(opcodes, ContainerEq(std::vector<spv::Op>{
-                           spv::Op::OpFAdd, spv::Op::OpLine, spv::Op::OpFMul,
-                           spv::Op::OpFSub, spv::Op::OpReturn}));
+  EXPECT_THAT(opcodes,
+              ContainerEq(std::vector<SpvOp>{SpvOpFAdd, SpvOpLine, SpvOpFMul,
+                                             SpvOpFSub, SpvOpReturn}));
 }
 
 TEST(IrBuilder, BuildModule_WithExtraLines_IsDefault) {
@@ -333,10 +333,9 @@ OpFunctionEnd
   spvtools::opt::analysis::DefUseManager* def_use_mgr =
       context->get_def_use_mgr();
 
-  std::vector<spv::Op> opcodes;
+  std::vector<SpvOp> opcodes;
   for (auto* inst = def_use_mgr->GetDef(1);
-       inst && (inst->opcode() != spv::Op::OpFunctionEnd);
-       inst = inst->NextNode()) {
+       inst && (inst->opcode() != SpvOpFunctionEnd); inst = inst->NextNode()) {
     inst->ForEachInst(
         [&opcodes](spvtools::opt::Instruction* sub_inst) {
           opcodes.push_back(sub_inst->opcode());
@@ -344,10 +343,9 @@ OpFunctionEnd
         true);
   }
 
-  EXPECT_THAT(opcodes, ContainerEq(std::vector<spv::Op>{
-                           spv::Op::OpFAdd, spv::Op::OpLine, spv::Op::OpFMul,
-                           spv::Op::OpLine, spv::Op::OpFSub, spv::Op::OpLine,
-                           spv::Op::OpReturn}));
+  EXPECT_THAT(opcodes, ContainerEq(std::vector<SpvOp>{
+                           SpvOpFAdd, SpvOpLine, SpvOpFMul, SpvOpLine,
+                           SpvOpFSub, SpvOpLine, SpvOpReturn}));
 }
 
 TEST(IrBuilder, ConsumeDebugInfoInst) {
@@ -1299,9 +1297,8 @@ TEST(IrBuilder, OpUndefOutsideFunction) {
 
   const auto opundef_count = std::count_if(
       context->module()->types_values_begin(),
-      context->module()->types_values_end(), [](const Instruction& inst) {
-        return inst.opcode() == spv::Op::OpUndef;
-      });
+      context->module()->types_values_end(),
+      [](const Instruction& inst) { return inst.opcode() == SpvOpUndef; });
   EXPECT_EQ(3, opundef_count);
 
   std::vector<uint32_t> binary;

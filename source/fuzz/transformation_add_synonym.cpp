@@ -82,7 +82,7 @@ bool TransformationAddSynonym::IsApplicable(
   // Check that we can insert |message._synonymous_instruction| before
   // |message_.insert_before| instruction. We use OpIAdd to represent some
   // instruction that can produce a synonym.
-  if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(spv::Op::OpIAdd,
+  if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(SpvOpIAdd,
                                                     insert_before_inst)) {
     return false;
   }
@@ -147,8 +147,7 @@ bool TransformationAddSynonym::IsInstructionValid(
   // Instruction must have a result id, type id. We skip OpUndef and
   // OpConstantNull.
   if (!inst || !inst->result_id() || !inst->type_id() ||
-      inst->opcode() == spv::Op::OpUndef ||
-      inst->opcode() == spv::Op::OpConstantNull) {
+      inst->opcode() == SpvOpUndef || inst->opcode() == SpvOpConstantNull) {
     return false;
   }
 
@@ -209,7 +208,7 @@ TransformationAddSynonym::MakeSynonymousInstruction(
   auto synonym_type_id =
       fuzzerutil::GetTypeId(ir_context, message_.result_id());
   assert(synonym_type_id && "Synonym has invalid type id");
-  auto opcode = spv::Op::OpNop;
+  auto opcode = SpvOpNop;
   const auto* synonym_type =
       ir_context->get_type_mgr()->GetType(synonym_type_id);
   assert(synonym_type && "Synonym has invalid type");
@@ -220,30 +219,30 @@ TransformationAddSynonym::MakeSynonymousInstruction(
 
   switch (message_.synonym_type()) {
     case protobufs::TransformationAddSynonym::SUB_ZERO:
-      opcode = is_integral ? spv::Op::OpISub : spv::Op::OpFSub;
+      opcode = is_integral ? SpvOpISub : SpvOpFSub;
       break;
     case protobufs::TransformationAddSynonym::MUL_ONE:
-      opcode = is_integral ? spv::Op::OpIMul : spv::Op::OpFMul;
+      opcode = is_integral ? SpvOpIMul : SpvOpFMul;
       break;
     case protobufs::TransformationAddSynonym::ADD_ZERO:
-      opcode = is_integral ? spv::Op::OpIAdd : spv::Op::OpFAdd;
+      opcode = is_integral ? SpvOpIAdd : SpvOpFAdd;
       break;
     case protobufs::TransformationAddSynonym::LOGICAL_OR:
-      opcode = spv::Op::OpLogicalOr;
+      opcode = SpvOpLogicalOr;
       break;
     case protobufs::TransformationAddSynonym::LOGICAL_AND:
-      opcode = spv::Op::OpLogicalAnd;
+      opcode = SpvOpLogicalAnd;
       break;
     case protobufs::TransformationAddSynonym::BITWISE_OR:
-      opcode = spv::Op::OpBitwiseOr;
+      opcode = SpvOpBitwiseOr;
       break;
     case protobufs::TransformationAddSynonym::BITWISE_XOR:
-      opcode = spv::Op::OpBitwiseXor;
+      opcode = SpvOpBitwiseXor;
       break;
 
     case protobufs::TransformationAddSynonym::COPY_OBJECT:
       return MakeUnique<opt::Instruction>(
-          ir_context, spv::Op::OpCopyObject, synonym_type_id,
+          ir_context, SpvOpCopyObject, synonym_type_id,
           message_.synonym_fresh_id(),
           opt::Instruction::OperandList{
               {SPV_OPERAND_TYPE_ID, {message_.result_id()}}});
