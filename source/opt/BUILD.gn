@@ -323,6 +323,7 @@ ohos_source_set("deqp_spirvtool_opt_source") {
     "//third_party/spirv-headers/include",
     "//third_party/spirv-headers/include/spirv/unified1",
     "//third_party/spirv-tools/include",
+    "//third_party/spirv-tools/source/opt",
     "//third_party/spirv-tools/source/util",
   ]
 
