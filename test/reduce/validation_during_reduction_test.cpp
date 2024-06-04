@@ -67,7 +67,7 @@ class OpVariableDuplicatorReductionOpportunity : public ReductionOpportunity {
 
   bool PreconditionHolds() override {
     Instruction* first_instruction = &*function_->begin()[0].begin();
-    return first_instruction->opcode() == spv::Op::OpVariable;
+    return first_instruction->opcode() == SpvOpVariable;
   }
 
  protected:
@@ -75,7 +75,7 @@ class OpVariableDuplicatorReductionOpportunity : public ReductionOpportunity {
     // Duplicate the first OpVariable instruction.
 
     Instruction* first_instruction = &*function_->begin()[0].begin();
-    assert(first_instruction->opcode() == spv::Op::OpVariable &&
+    assert(first_instruction->opcode() == SpvOpVariable &&
            "Expected first instruction to be OpVariable");
     IRContext* context = first_instruction->context();
     Instruction* cloned_instruction = first_instruction->Clone(context);
@@ -105,7 +105,7 @@ class OpVariableDuplicatorReductionOpportunityFinder
     std::vector<std::unique_ptr<ReductionOpportunity>> result;
     for (auto& function : *context->module()) {
       Instruction* first_instruction = &*function.begin()[0].begin();
-      if (first_instruction->opcode() == spv::Op::OpVariable) {
+      if (first_instruction->opcode() == SpvOpVariable) {
         result.push_back(
             MakeUnique<OpVariableDuplicatorReductionOpportunity>(&function));
       }
@@ -523,7 +523,7 @@ TEST(ValidationDuringReductionTest, CheckValidationOptions) {
                OpFunctionEnd
   )";
 
-  spv_target_env env = SPV_ENV_VULKAN_1_0;
+  spv_target_env env = SPV_ENV_UNIVERSAL_1_3;
   std::vector<uint32_t> binary_in;
   SpirvTools t(env);
 

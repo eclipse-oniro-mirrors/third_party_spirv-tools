@@ -47,7 +47,7 @@ bool TransformationAdjustBranchWeights::IsApplicable(
     return false;
   }
 
-  spv::Op opcode = static_cast<spv::Op>(
+  SpvOp opcode = static_cast<SpvOp>(
       message_.instruction_descriptor().target_instruction_opcode());
 
   assert(instruction->opcode() == opcode &&
@@ -55,7 +55,7 @@ bool TransformationAdjustBranchWeights::IsApplicable(
          "descriptor.");
 
   // Must be an OpBranchConditional instruction.
-  if (opcode != spv::Op::OpBranchConditional) {
+  if (opcode != SpvOpBranchConditional) {
     return false;
   }
 

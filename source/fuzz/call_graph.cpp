@@ -54,7 +54,7 @@ void CallGraph::BuildGraphAndGetDepthOfFunctionCalls(
     // Consider every function call instruction in every block.
     for (auto& block : function) {
       for (auto& instruction : block) {
-        if (instruction.opcode() != spv::Op::OpFunctionCall) {
+        if (instruction.opcode() != SpvOpFunctionCall) {
           continue;
         }
         // Get the id of the function being called.

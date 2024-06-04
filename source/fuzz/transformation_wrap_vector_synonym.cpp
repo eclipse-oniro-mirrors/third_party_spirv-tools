@@ -83,7 +83,7 @@ bool TransformationWrapVectorSynonym::IsApplicable(
   }
 
   auto vec1_type = ir_context->get_def_use_mgr()->GetDef(vec1_type_id);
-  if (vec1_type->opcode() != spv::Op::OpTypeVector) {
+  if (vec1_type->opcode() != SpvOpTypeVector) {
     return false;
   }
 
@@ -178,18 +178,18 @@ bool TransformationWrapVectorSynonym::IsInstructionSupported(
   auto type_instruction =
       ir_context->get_def_use_mgr()->GetDef(instruction.type_id());
 
-  if ((type_instruction->opcode() != spv::Op::OpTypeInt &&
-       type_instruction->opcode() != spv::Op::OpTypeFloat)) {
+  if ((type_instruction->opcode() != SpvOpTypeInt &&
+       type_instruction->opcode() != SpvOpTypeFloat)) {
     return false;
   }
 
   switch (instruction.opcode()) {
-    case spv::Op::OpIAdd:
-    case spv::Op::OpISub:
-    case spv::Op::OpIMul:
-    case spv::Op::OpFAdd:
-    case spv::Op::OpFSub:
-    case spv::Op::OpFMul:
+    case SpvOpIAdd:
+    case SpvOpISub:
+    case SpvOpIMul:
+    case SpvOpFAdd:
+    case SpvOpFSub:
+    case SpvOpFMul:
       return true;
     default:
       return false;

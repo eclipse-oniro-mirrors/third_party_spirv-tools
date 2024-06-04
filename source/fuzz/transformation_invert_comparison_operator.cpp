@@ -47,8 +47,7 @@ bool TransformationInvertComparisonOperator::IsApplicable(
   auto iter = fuzzerutil::GetIteratorForInstruction(block, inst);
   ++iter;
   assert(iter != block->end() && "Instruction can't be the last in the block");
-  assert(fuzzerutil::CanInsertOpcodeBeforeInstruction(spv::Op::OpLogicalNot,
-                                                      iter) &&
+  assert(fuzzerutil::CanInsertOpcodeBeforeInstruction(SpvOpLogicalNot, iter) &&
          "Can't insert negation after comparison operator");
 
   // |message_.fresh_id| must be fresh.
@@ -66,7 +65,7 @@ void TransformationInvertComparisonOperator::Apply(
   ++iter;
 
   iter.InsertBefore(MakeUnique<opt::Instruction>(
-      ir_context, spv::Op::OpLogicalNot, inst->type_id(), inst->result_id(),
+      ir_context, SpvOpLogicalNot, inst->type_id(), inst->result_id(),
       opt::Instruction::OperandList{
           {SPV_OPERAND_TYPE_ID, {message_.fresh_id()}}}));
 
@@ -83,88 +82,88 @@ void TransformationInvertComparisonOperator::Apply(
 }
 
 bool TransformationInvertComparisonOperator::IsInversionSupported(
-    spv::Op opcode) {
+    SpvOp opcode) {
   switch (opcode) {
-    case spv::Op::OpSGreaterThan:
-    case spv::Op::OpSGreaterThanEqual:
-    case spv::Op::OpSLessThan:
-    case spv::Op::OpSLessThanEqual:
-    case spv::Op::OpUGreaterThan:
-    case spv::Op::OpUGreaterThanEqual:
-    case spv::Op::OpULessThan:
-    case spv::Op::OpULessThanEqual:
-    case spv::Op::OpIEqual:
-    case spv::Op::OpINotEqual:
-    case spv::Op::OpFOrdEqual:
-    case spv::Op::OpFUnordEqual:
-    case spv::Op::OpFOrdNotEqual:
-    case spv::Op::OpFUnordNotEqual:
-    case spv::Op::OpFOrdLessThan:
-    case spv::Op::OpFUnordLessThan:
-    case spv::Op::OpFOrdLessThanEqual:
-    case spv::Op::OpFUnordLessThanEqual:
-    case spv::Op::OpFOrdGreaterThan:
-    case spv::Op::OpFUnordGreaterThan:
-    case spv::Op::OpFOrdGreaterThanEqual:
-    case spv::Op::OpFUnordGreaterThanEqual:
+    case SpvOpSGreaterThan:
+    case SpvOpSGreaterThanEqual:
+    case SpvOpSLessThan:
+    case SpvOpSLessThanEqual:
+    case SpvOpUGreaterThan:
+    case SpvOpUGreaterThanEqual:
+    case SpvOpULessThan:
+    case SpvOpULessThanEqual:
+    case SpvOpIEqual:
+    case SpvOpINotEqual:
+    case SpvOpFOrdEqual:
+    case SpvOpFUnordEqual:
+    case SpvOpFOrdNotEqual:
+    case SpvOpFUnordNotEqual:
+    case SpvOpFOrdLessThan:
+    case SpvOpFUnordLessThan:
+    case SpvOpFOrdLessThanEqual:
+    case SpvOpFUnordLessThanEqual:
+    case SpvOpFOrdGreaterThan:
+    case SpvOpFUnordGreaterThan:
+    case SpvOpFOrdGreaterThanEqual:
+    case SpvOpFUnordGreaterThanEqual:
       return true;
     default:
       return false;
   }
 }
 
-spv::Op TransformationInvertComparisonOperator::InvertOpcode(spv::Op opcode) {
+SpvOp TransformationInvertComparisonOperator::InvertOpcode(SpvOp opcode) {
   assert(IsInversionSupported(opcode) && "Inversion must be supported");
 
   switch (opcode) {
-    case spv::Op::OpSGreaterThan:
-      return spv::Op::OpSLessThanEqual;
-    case spv::Op::OpSGreaterThanEqual:
-      return spv::Op::OpSLessThan;
-    case spv::Op::OpSLessThan:
-      return spv::Op::OpSGreaterThanEqual;
-    case spv::Op::OpSLessThanEqual:
-      return spv::Op::OpSGreaterThan;
-    case spv::Op::OpUGreaterThan:
-      return spv::Op::OpULessThanEqual;
-    case spv::Op::OpUGreaterThanEqual:
-      return spv::Op::OpULessThan;
-    case spv::Op::OpULessThan:
-      return spv::Op::OpUGreaterThanEqual;
-    case spv::Op::OpULessThanEqual:
-      return spv::Op::OpUGreaterThan;
-    case spv::Op::OpIEqual:
-      return spv::Op::OpINotEqual;
-    case spv::Op::OpINotEqual:
-      return spv::Op::OpIEqual;
-    case spv::Op::OpFOrdEqual:
-      return spv::Op::OpFUnordNotEqual;
-    case spv::Op::OpFUnordEqual:
-      return spv::Op::OpFOrdNotEqual;
-    case spv::Op::OpFOrdNotEqual:
-      return spv::Op::OpFUnordEqual;
-    case spv::Op::OpFUnordNotEqual:
-      return spv::Op::OpFOrdEqual;
-    case spv::Op::OpFOrdLessThan:
-      return spv::Op::OpFUnordGreaterThanEqual;
-    case spv::Op::OpFUnordLessThan:
-      return spv::Op::OpFOrdGreaterThanEqual;
-    case spv::Op::OpFOrdLessThanEqual:
-      return spv::Op::OpFUnordGreaterThan;
-    case spv::Op::OpFUnordLessThanEqual:
-      return spv::Op::OpFOrdGreaterThan;
-    case spv::Op::OpFOrdGreaterThan:
-      return spv::Op::OpFUnordLessThanEqual;
-    case spv::Op::OpFUnordGreaterThan:
-      return spv::Op::OpFOrdLessThanEqual;
-    case spv::Op::OpFOrdGreaterThanEqual:
-      return spv::Op::OpFUnordLessThan;
-    case spv::Op::OpFUnordGreaterThanEqual:
-      return spv::Op::OpFOrdLessThan;
+    case SpvOpSGreaterThan:
+      return SpvOpSLessThanEqual;
+    case SpvOpSGreaterThanEqual:
+      return SpvOpSLessThan;
+    case SpvOpSLessThan:
+      return SpvOpSGreaterThanEqual;
+    case SpvOpSLessThanEqual:
+      return SpvOpSGreaterThan;
+    case SpvOpUGreaterThan:
+      return SpvOpULessThanEqual;
+    case SpvOpUGreaterThanEqual:
+      return SpvOpULessThan;
+    case SpvOpULessThan:
+      return SpvOpUGreaterThanEqual;
+    case SpvOpULessThanEqual:
+      return SpvOpUGreaterThan;
+    case SpvOpIEqual:
+      return SpvOpINotEqual;
+    case SpvOpINotEqual:
+      return SpvOpIEqual;
+    case SpvOpFOrdEqual:
+      return SpvOpFUnordNotEqual;
+    case SpvOpFUnordEqual:
+      return SpvOpFOrdNotEqual;
+    case SpvOpFOrdNotEqual:
+      return SpvOpFUnordEqual;
+    case SpvOpFUnordNotEqual:
+      return SpvOpFOrdEqual;
+    case SpvOpFOrdLessThan:
+      return SpvOpFUnordGreaterThanEqual;
+    case SpvOpFUnordLessThan:
+      return SpvOpFOrdGreaterThanEqual;
+    case SpvOpFOrdLessThanEqual:
+      return SpvOpFUnordGreaterThan;
+    case SpvOpFUnordLessThanEqual:
+      return SpvOpFOrdGreaterThan;
+    case SpvOpFOrdGreaterThan:
+      return SpvOpFUnordLessThanEqual;
+    case SpvOpFUnordGreaterThan:
+      return SpvOpFOrdLessThanEqual;
+    case SpvOpFOrdGreaterThanEqual:
+      return SpvOpFUnordLessThan;
+    case SpvOpFUnordGreaterThanEqual:
+      return SpvOpFOrdLessThan;
     default:
       // The program will fail in the debug mode because of the assertion
       // at the beginning of the function.
-      return spv::Op::OpNop;
+      return SpvOpNop;
   }
 }
 

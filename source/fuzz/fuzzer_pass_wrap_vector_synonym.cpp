@@ -52,7 +52,7 @@ void FuzzerPassWrapVectorSynonym::Apply() {
         // It must be valid to insert an OpCompositeConstruct instruction
         // before |instruction_iterator|.
         if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(
-                spv::Op::OpCompositeConstruct, instruction_iterator)) {
+                SpvOpCompositeConstruct, instruction_iterator)) {
           return;
         }
 

@@ -13,11 +13,17 @@
 // limitations under the License.
 
 #include <memory>
+#include <string>
+#include <unordered_set>
 #include <vector>
 
+#include "gmock/gmock.h"
+#include "source/opt/iterator.h"
 #include "source/opt/loop_dependence.h"
 #include "source/opt/loop_descriptor.h"
+#include "source/opt/pass.h"
 #include "source/opt/scalar_analysis.h"
+#include "source/opt/tree_iterator.h"
 #include "test/opt/assembly_builder.h"
 #include "test/opt/function_utils.h"
 #include "test/opt/pass_fixture.h"
@@ -166,7 +172,7 @@ TEST(DependencyAnalysisHelpers, UnsupportedLoops) {
     const Instruction* store[1] = {nullptr};
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 16)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         store[stores_found] = &inst;
         ++stores_found;
       }
@@ -193,7 +199,7 @@ TEST(DependencyAnalysisHelpers, UnsupportedLoops) {
     const Instruction* store[1] = {nullptr};
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 47)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         store[stores_found] = &inst;
         ++stores_found;
       }
@@ -1489,7 +1495,7 @@ TEST(DependencyAnalysisHelpers, const_to_symbolic) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 30)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -1570,7 +1576,7 @@ TEST(DependencyAnalysisHelpers, const_to_symbolic) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 65)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -1649,7 +1655,7 @@ TEST(DependencyAnalysisHelpers, const_to_symbolic) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 96)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -1728,7 +1734,7 @@ TEST(DependencyAnalysisHelpers, const_to_symbolic) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 126)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -2061,7 +2067,7 @@ TEST(DependencyAnalysisHelpers, symbolic_to_const) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 30)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -2142,7 +2148,7 @@ TEST(DependencyAnalysisHelpers, symbolic_to_const) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 66)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -2223,7 +2229,7 @@ TEST(DependencyAnalysisHelpers, symbolic_to_const) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 96)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -2304,7 +2310,7 @@ TEST(DependencyAnalysisHelpers, symbolic_to_const) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 127)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -2699,7 +2705,7 @@ TEST(DependencyAnalysisHelpers, symbolic_to_symbolic) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 35)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -2778,7 +2784,7 @@ TEST(DependencyAnalysisHelpers, symbolic_to_symbolic) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 90)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -2857,7 +2863,7 @@ TEST(DependencyAnalysisHelpers, symbolic_to_symbolic) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 139)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }
@@ -2936,7 +2942,7 @@ TEST(DependencyAnalysisHelpers, symbolic_to_symbolic) {
     const Instruction* stores[2];
     int stores_found = 0;
     for (const Instruction& inst : *spvtest::GetBasicBlock(f, 188)) {
-      if (inst.opcode() == spv::Op::OpStore) {
+      if (inst.opcode() == SpvOp::SpvOpStore) {
         stores[stores_found] = &inst;
         ++stores_found;
       }

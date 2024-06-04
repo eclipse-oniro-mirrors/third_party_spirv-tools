@@ -53,9 +53,9 @@ bool TransformationPushIdThroughVariable::IsApplicable(
 
   // It must be valid to insert the OpStore and OpLoad instruction before it.
   if (!fuzzerutil::CanInsertOpcodeBeforeInstruction(
-          spv::Op::OpStore, instruction_to_insert_before) ||
+          SpvOpStore, instruction_to_insert_before) ||
       !fuzzerutil::CanInsertOpcodeBeforeInstruction(
-          spv::Op::OpLoad, instruction_to_insert_before)) {
+          SpvOpLoad, instruction_to_insert_before)) {
     return false;
   }
 
@@ -75,16 +75,14 @@ bool TransformationPushIdThroughVariable::IsApplicable(
   // A pointer type instruction pointing to the value type must be defined.
   auto pointer_type_id = fuzzerutil::MaybeGetPointerType(
       ir_context, value_instruction->type_id(),
-      static_cast<spv::StorageClass>(message_.variable_storage_class()));
+      static_cast<SpvStorageClass>(message_.variable_storage_class()));
   if (!pointer_type_id) {
     return false;
   }
 
   // |message_.variable_storage_class| must be private or function.
-  assert((message_.variable_storage_class() ==
-              (uint32_t)spv::StorageClass::Private ||
-          message_.variable_storage_class() ==
-              (uint32_t)spv::StorageClass::Function) &&
+  assert((message_.variable_storage_class() == SpvStorageClassPrivate ||
+          message_.variable_storage_class() == SpvStorageClassFunction) &&
          "The variable storage class must be private or function.");
 
   // Check that initializer is valid.
@@ -113,15 +111,14 @@ void TransformationPushIdThroughVariable::Apply(
   // A pointer type instruction pointing to the value type must be defined.
   auto pointer_type_id = fuzzerutil::MaybeGetPointerType(
       ir_context, value_instruction->type_id(),
-      static_cast<spv::StorageClass>(message_.variable_storage_class()));
+      static_cast<SpvStorageClass>(message_.variable_storage_class()));
   assert(pointer_type_id && "The required pointer type must be available.");
 
   // Adds whether a global or local variable.
-  if (spv::StorageClass(message_.variable_storage_class()) ==
-      spv::StorageClass::Private) {
+  if (message_.variable_storage_class() == SpvStorageClassPrivate) {
     opt::Instruction* global_variable = fuzzerutil::AddGlobalVariable(
         ir_context, message_.variable_id(), pointer_type_id,
-        spv::StorageClass::Private, message_.initializer_id());
+        SpvStorageClassPrivate, message_.initializer_id());
     ir_context->get_def_use_mgr()->AnalyzeInstDefUse(global_variable);
   } else {
     opt::Function* function =
@@ -141,13 +138,13 @@ void TransformationPushIdThroughVariable::Apply(
   fuzzerutil::UpdateModuleIdBound(ir_context, message_.value_synonym_id());
   opt::Instruction* load_instruction =
       insert_before->InsertBefore(MakeUnique<opt::Instruction>(
-          ir_context, spv::Op::OpLoad, value_instruction->type_id(),
+          ir_context, SpvOpLoad, value_instruction->type_id(),
           message_.value_synonym_id(),
           opt::Instruction::OperandList(
               {{SPV_OPERAND_TYPE_ID, {message_.variable_id()}}})));
   opt::Instruction* store_instruction =
       load_instruction->InsertBefore(MakeUnique<opt::Instruction>(
-          ir_context, spv::Op::OpStore, 0, 0,
+          ir_context, SpvOpStore, 0, 0,
           opt::Instruction::OperandList(
               {{SPV_OPERAND_TYPE_ID, {message_.variable_id()}},
                {SPV_OPERAND_TYPE_ID, {message_.value_id()}}})));

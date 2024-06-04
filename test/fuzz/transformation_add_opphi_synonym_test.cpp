@@ -365,7 +365,8 @@ TEST(TransformationAddOpPhiSynonymTest, VariablePointers) {
       MakeSynonymFact(12, 16));
 
   // Remove the VariablePointers capability.
-  context.get()->RemoveCapability(spv::Capability::VariablePointers);
+  context.get()->get_feature_mgr()->RemoveCapability(
+      SpvCapabilityVariablePointers);
 
   // The VariablePointers capability is required to add an OpPhi instruction of
   // pointer type.
@@ -373,7 +374,8 @@ TEST(TransformationAddOpPhiSynonymTest, VariablePointers) {
                    .IsApplicable(context.get(), transformation_context));
 
   // Add the VariablePointers capability back.
-  context.get()->AddCapability(spv::Capability::VariablePointers);
+  context.get()->get_feature_mgr()->AddCapability(
+      SpvCapabilityVariablePointers);
 
   // If the ids have pointer type, the storage class must be Workgroup or
   // StorageBuffer, but it is Function in this case.

@@ -13,6 +13,9 @@
 // limitations under the License.
 
 #include <algorithm>
+#include <cstdarg>
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <unordered_set>
 #include <vector>

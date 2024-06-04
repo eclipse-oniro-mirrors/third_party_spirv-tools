@@ -23,7 +23,7 @@ using spvtest::ElementsIn;
 
 // Capabilities required by an Opcode.
 struct ExpectedOpCodeCapabilities {
-  spv::Op opcode;
+  SpvOp opcode;
   CapabilitySet capabilities;
 };
 
@@ -46,36 +46,33 @@ INSTANTIATE_TEST_SUITE_P(
     TableRowTest, OpcodeTableCapabilitiesTest,
     // Spot-check a few opcodes.
     ::testing::Values(
-        ExpectedOpCodeCapabilities{spv::Op::OpImageQuerySize,
-                                   CapabilitySet{spv::Capability::Kernel,
-                                                 spv::Capability::ImageQuery}},
-        ExpectedOpCodeCapabilities{spv::Op::OpImageQuerySizeLod,
-                                   CapabilitySet{spv::Capability::Kernel,
-                                                 spv::Capability::ImageQuery}},
-        ExpectedOpCodeCapabilities{spv::Op::OpImageQueryLevels,
-                                   CapabilitySet{spv::Capability::Kernel,
-                                                 spv::Capability::ImageQuery}},
-        ExpectedOpCodeCapabilities{spv::Op::OpImageQuerySamples,
-                                   CapabilitySet{spv::Capability::Kernel,
-                                                 spv::Capability::ImageQuery}},
         ExpectedOpCodeCapabilities{
-            spv::Op::OpImageSparseSampleImplicitLod,
-            CapabilitySet{spv::Capability::SparseResidency}},
-        ExpectedOpCodeCapabilities{spv::Op::OpCopyMemorySized,
-                                   CapabilitySet{spv::Capability::Addresses}},
-        ExpectedOpCodeCapabilities{spv::Op::OpArrayLength,
-                                   CapabilitySet{spv::Capability::Shader}},
-        ExpectedOpCodeCapabilities{spv::Op::OpFunction, CapabilitySet()},
-        ExpectedOpCodeCapabilities{spv::Op::OpConvertFToS, CapabilitySet()},
+            SpvOpImageQuerySize,
+            CapabilitySet{SpvCapabilityKernel, SpvCapabilityImageQuery}},
         ExpectedOpCodeCapabilities{
-            spv::Op::OpEmitStreamVertex,
-            CapabilitySet{spv::Capability::GeometryStreams}},
+            SpvOpImageQuerySizeLod,
+            CapabilitySet{SpvCapabilityKernel, SpvCapabilityImageQuery}},
         ExpectedOpCodeCapabilities{
-            spv::Op::OpTypeNamedBarrier,
-            CapabilitySet{spv::Capability::NamedBarrier}},
+            SpvOpImageQueryLevels,
+            CapabilitySet{SpvCapabilityKernel, SpvCapabilityImageQuery}},
         ExpectedOpCodeCapabilities{
-            spv::Op::OpGetKernelMaxNumSubgroups,
-            CapabilitySet{spv::Capability::SubgroupDispatch}}));
+            SpvOpImageQuerySamples,
+            CapabilitySet{SpvCapabilityKernel, SpvCapabilityImageQuery}},
+        ExpectedOpCodeCapabilities{SpvOpImageSparseSampleImplicitLod,
+                                   CapabilitySet{SpvCapabilitySparseResidency}},
+        ExpectedOpCodeCapabilities{SpvOpCopyMemorySized,
+                                   CapabilitySet{SpvCapabilityAddresses}},
+        ExpectedOpCodeCapabilities{SpvOpArrayLength,
+                                   CapabilitySet{SpvCapabilityShader}},
+        ExpectedOpCodeCapabilities{SpvOpFunction, CapabilitySet()},
+        ExpectedOpCodeCapabilities{SpvOpConvertFToS, CapabilitySet()},
+        ExpectedOpCodeCapabilities{SpvOpEmitStreamVertex,
+                                   CapabilitySet{SpvCapabilityGeometryStreams}},
+        ExpectedOpCodeCapabilities{SpvOpTypeNamedBarrier,
+                                   CapabilitySet{SpvCapabilityNamedBarrier}},
+        ExpectedOpCodeCapabilities{
+            SpvOpGetKernelMaxNumSubgroups,
+            CapabilitySet{SpvCapabilitySubgroupDispatch}}));
 
 }  // namespace
 }  // namespace spvtools

@@ -90,7 +90,7 @@ OpFunctionEnd
 
 // Returns expected error string if |opcode| produces a duplicate type
 // declaration.
-std::string GetErrorString(spv::Op opcode) {
+std::string GetErrorString(SpvOp opcode) {
   return "Duplicate non-aggregate type declarations are not allowed. Opcode: " +
          std::string(spvOpcodeString(opcode));
 }
@@ -107,8 +107,7 @@ TEST_F(ValidateTypeUnique, duplicate_void) {
 )" + GetBody();
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions());
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypeVoid)));
+  EXPECT_THAT(getDiagnosticString(), HasSubstr(GetErrorString(SpvOpTypeVoid)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_bool) {
@@ -117,8 +116,7 @@ TEST_F(ValidateTypeUnique, duplicate_bool) {
 )" + GetBody();
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions());
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypeBool)));
+  EXPECT_THAT(getDiagnosticString(), HasSubstr(GetErrorString(SpvOpTypeBool)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_int) {
@@ -127,8 +125,7 @@ TEST_F(ValidateTypeUnique, duplicate_int) {
 )" + GetBody();
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions());
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypeInt)));
+  EXPECT_THAT(getDiagnosticString(), HasSubstr(GetErrorString(SpvOpTypeInt)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_float) {
@@ -137,8 +134,7 @@ TEST_F(ValidateTypeUnique, duplicate_float) {
 )" + GetBody();
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions());
-  EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypeFloat)));
+  EXPECT_THAT(getDiagnosticString(), HasSubstr(GetErrorString(SpvOpTypeFloat)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_vec3) {
@@ -148,7 +144,7 @@ TEST_F(ValidateTypeUnique, duplicate_vec3) {
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions());
   EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypeVector)));
+              HasSubstr(GetErrorString(SpvOpTypeVector)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_mat33) {
@@ -158,7 +154,7 @@ TEST_F(ValidateTypeUnique, duplicate_mat33) {
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions());
   EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypeMatrix)));
+              HasSubstr(GetErrorString(SpvOpTypeMatrix)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_vfunc) {
@@ -168,7 +164,7 @@ TEST_F(ValidateTypeUnique, duplicate_vfunc) {
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions());
   EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypeFunction)));
+              HasSubstr(GetErrorString(SpvOpTypeFunction)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_pipe_storage) {
@@ -185,7 +181,7 @@ OpMemoryModel Physical32 OpenCL
   CompileSuccessfully(str.c_str(), SPV_ENV_UNIVERSAL_1_1);
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions(SPV_ENV_UNIVERSAL_1_1));
   EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypePipeStorage)));
+              HasSubstr(GetErrorString(SpvOpTypePipeStorage)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_named_barrier) {
@@ -201,7 +197,7 @@ OpMemoryModel Physical32 OpenCL
   CompileSuccessfully(str.c_str(), SPV_ENV_UNIVERSAL_1_1);
   ASSERT_EQ(kDuplicateTypeError, ValidateInstructions(SPV_ENV_UNIVERSAL_1_1));
   EXPECT_THAT(getDiagnosticString(),
-              HasSubstr(GetErrorString(spv::Op::OpTypeNamedBarrier)));
+              HasSubstr(GetErrorString(SpvOpTypeNamedBarrier)));
 }
 
 TEST_F(ValidateTypeUnique, duplicate_forward_pointer) {
@@ -238,7 +234,7 @@ OpMemoryModel Physical32 OpenCL
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(SPV_SUCCESS, ValidateInstructions());
   EXPECT_THAT(getDiagnosticString(),
-              Not(HasSubstr(GetErrorString(spv::Op::OpTypeVoid))));
+              Not(HasSubstr(GetErrorString(SpvOpTypeVoid))));
 }
 
 TEST_F(ValidateTypeUnique, DuplicatePointerTypesNoExtension) {
@@ -267,7 +263,7 @@ OpMemoryModel Logical GLSL450
   CompileSuccessfully(str.c_str());
   ASSERT_EQ(SPV_SUCCESS, ValidateInstructions());
   EXPECT_THAT(getDiagnosticString(),
-              Not(HasSubstr(GetErrorString(spv::Op::OpTypePointer))));
+              Not(HasSubstr(GetErrorString(SpvOpTypePointer))));
 }
 
 }  // namespace

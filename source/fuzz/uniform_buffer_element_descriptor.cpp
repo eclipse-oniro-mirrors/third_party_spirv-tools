@@ -49,11 +49,10 @@ opt::Instruction* FindUniformVariable(
 
   for (auto& inst : context->types_values()) {
     // Consider all global variables with uniform storage class.
-    if (inst.opcode() != spv::Op::OpVariable) {
+    if (inst.opcode() != SpvOpVariable) {
       continue;
     }
-    if (spv::StorageClass(inst.GetSingleWordInOperand(0)) !=
-        spv::StorageClass::Uniform) {
+    if (inst.GetSingleWordInOperand(0) != SpvStorageClassUniform) {
       continue;
     }
 
@@ -61,7 +60,7 @@ opt::Instruction* FindUniformVariable(
     // matching that in |uniform_buffer_element|.
     bool descriptor_set_matches = false;
     context->get_decoration_mgr()->ForEachDecoration(
-        inst.result_id(), uint32_t(spv::Decoration::DescriptorSet),
+        inst.result_id(), SpvDecorationDescriptorSet,
         [&descriptor_set_matches, &uniform_buffer_element_descriptor](
             const opt::Instruction& decoration_inst) {
           const uint32_t kDescriptorSetOperandIndex = 2;
@@ -80,7 +79,7 @@ opt::Instruction* FindUniformVariable(
     // in |uniform_buffer_element|.
     bool binding_matches = false;
     context->get_decoration_mgr()->ForEachDecoration(
-        inst.result_id(), uint32_t(spv::Decoration::Binding),
+        inst.result_id(), SpvDecorationBinding,
         [&binding_matches, &uniform_buffer_element_descriptor](
             const opt::Instruction& decoration_inst) {
           const uint32_t kBindingOperandIndex = 2;

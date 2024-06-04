@@ -43,8 +43,7 @@ void TransformationAddConstantBoolean::Apply(
   // Add the boolean constant to the module, ensuring the module's id bound is
   // high enough.
   auto new_instruction = MakeUnique<opt::Instruction>(
-      ir_context,
-      message_.is_true() ? spv::Op::OpConstantTrue : spv::Op::OpConstantFalse,
+      ir_context, message_.is_true() ? SpvOpConstantTrue : SpvOpConstantFalse,
       fuzzerutil::MaybeGetBoolType(ir_context), message_.fresh_id(),
       opt::Instruction::OperandList());
   auto new_instruction_ptr = new_instruction.get();

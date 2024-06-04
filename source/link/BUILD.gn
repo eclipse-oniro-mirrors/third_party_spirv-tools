@@ -26,57 +26,8 @@ config("deqp_spirvtool_link_config") {
   ]
 }
 
-config("spv_headers_public_config") {
-  include_dirs = [ "include" ]
-}
-
-config("spvtools_include_gen_dirs") {
-  include_dirs = [ "$target_gen_dir" ]
-}
-
-config("spvtools_internal_config") {
-  include_dirs = [
-    ".",
-    "//third_party/spirv-headers/include",
-  ]
-
-  configs = [
-    ":spv_headers_public_config",
-    ":spvtools_include_gen_dirs",
-  ]
-
-  cflags = []
-  if (is_clang) {
-    cflags += [
-      "-Wno-implicit-fallthrough",
-      "-Wno-newline-eof",
-      "-Wno-unreachable-code-break",
-      "-Wno-unreachable-code-return",
-    ]
-  } else if (!is_win) {
-    # Work around a false-positive on a Skia GCC 10 builder.
-    cflags += [ "-Wno-format-truncation" ]
-  } else {
-    # Make MSVC report the correct value for __cplusplus
-    cflags += [ "/Zc:__cplusplus" ]
-  }
-
-  if (!is_win) {
-    cflags += [ "-std=c++17" ]
-  } else {
-    cflags += [ "/std:c++17" ]
-  }
-}
-
 ohos_source_set("deqp_spirvtool_link_source") {
-  sources = [
-    "//third_party/spirv-tools/include/spirv-tools/instrument.hpp",
-    "//third_party/spirv-tools/include/spirv-tools/libspirv.h",
-    "//third_party/spirv-tools/include/spirv-tools/libspirv.hpp",
-    "//third_party/spirv-tools/include/spirv-tools/linker.hpp",
-    "//third_party/spirv-tools/include/spirv-tools/optimizer.hpp",
-    "//third_party/spirv-tools/source/link/linker.cpp",
-  ]
+  sources = [ "//third_party/spirv-tools/source/link/linker.cpp" ]
 
   include_dirs = deqp_common_include_dirs
   include_dirs += [
@@ -87,14 +38,7 @@ ohos_source_set("deqp_spirvtool_link_source") {
     "//third_party/spirv-tools/include",
   ]
 
-  if (build_with_chromium) {
-    configs -= [ "//build/config/compiler:chromium_code" ]
-    configs += [ "//build/config/compiler:no_chromium_code" ]
-  }
-
   configs = [ ":deqp_spirvtool_link_config" ]
-  configs += [ ":spv_headers_public_config" ]
-  configs += [ ":spvtools_internal_config" ]
 }
 
 ohos_static_library("libdeqp_spirvtools-link") {
@@ -102,7 +46,6 @@ ohos_static_library("libdeqp_spirvtools-link") {
     ":deqp_spirvtool_link_source",
     "//third_party/spirv-tools:libdeqp_spirvtools",
     "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
-    "//third_party/spirv-tools/source/val:libdeqp_spirvtools-val",
   ]
   part_name = "graphic_2d"
   subsystem_name = "graphic"

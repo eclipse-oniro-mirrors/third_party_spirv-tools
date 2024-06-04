@@ -32,34 +32,32 @@ using ::testing::Eq;
 // Test Dim enums via OpTypeImage
 
 using DimTest =
-    spvtest::TextToBinaryTestBase<::testing::TestWithParam<EnumCase<spv::Dim>>>;
+    spvtest::TextToBinaryTestBase<::testing::TestWithParam<EnumCase<SpvDim>>>;
 
 TEST_P(DimTest, AnyDim) {
   const std::string input =
       "%1 = OpTypeImage %2 " + GetParam().name() + " 2 3 0 4 Rgba8\n";
-  EXPECT_THAT(CompiledInstructions(input),
-              Eq(MakeInstruction(spv::Op::OpTypeImage,
-                                 {1, 2, (uint32_t)GetParam().value(), 2, 3, 0,
-                                  4, (uint32_t)spv::ImageFormat::Rgba8})));
+  EXPECT_THAT(
+      CompiledInstructions(input),
+      Eq(MakeInstruction(SpvOpTypeImage, {1, 2, GetParam().value(), 2, 3, 0, 4,
+                                          SpvImageFormatRgba8})));
 
   // Check the disassembler as well.
   EXPECT_THAT(EncodeAndDecodeSuccessfully(input), Eq(input));
 }
 
 // clang-format off
-#define CASE(NAME) {spv::Dim::NAME, #NAME}
-#define CASE1(DIM, NAME) {spv::Dim::DIM, #NAME}
+#define CASE(NAME) {SpvDim##NAME, #NAME}
 INSTANTIATE_TEST_SUITE_P(
     TextToBinaryDim, DimTest,
-    ::testing::ValuesIn(std::vector<EnumCase<spv::Dim>>{
-        CASE1(Dim1D, 1D),
-        CASE1(Dim2D, 2D),
-        CASE1(Dim3D, 3D),
+    ::testing::ValuesIn(std::vector<EnumCase<SpvDim>>{
+        CASE(1D),
+        CASE(2D),
+        CASE(3D),
         CASE(Cube),
         CASE(Rect),
         CASE(Buffer),
         CASE(SubpassData),
-        CASE(TileImageDataEXT),
     }));
 #undef CASE
 // clang-format on
@@ -72,24 +70,23 @@ TEST_F(DimTest, WrongDim) {
 // Test ImageFormat enums via OpTypeImage
 
 using ImageFormatTest = spvtest::TextToBinaryTestBase<
-    ::testing::TestWithParam<EnumCase<spv::ImageFormat>>>;
+    ::testing::TestWithParam<EnumCase<SpvImageFormat>>>;
 
 TEST_P(ImageFormatTest, AnyImageFormatAndNoAccessQualifier) {
   const std::string input =
       "%1 = OpTypeImage %2 1D 2 3 0 4 " + GetParam().name() + "\n";
   EXPECT_THAT(CompiledInstructions(input),
-              Eq(MakeInstruction(spv::Op::OpTypeImage,
-                                 {1, 2, (uint32_t)spv::Dim::Dim1D, 2, 3, 0, 4,
-                                  GetParam().value()})));
+              Eq(MakeInstruction(SpvOpTypeImage, {1, 2, SpvDim1D, 2, 3, 0, 4,
+                                                  GetParam().value()})));
   // Check the disassembler as well.
   EXPECT_THAT(EncodeAndDecodeSuccessfully(input), Eq(input));
 }
 
 // clang-format off
-#define CASE(NAME) {spv::ImageFormat::NAME, #NAME}
+#define CASE(NAME) {SpvImageFormat##NAME, #NAME}
 INSTANTIATE_TEST_SUITE_P(
     TextToBinaryImageFormat, ImageFormatTest,
-    ::testing::ValuesIn(std::vector<EnumCase<spv::ImageFormat>>{
+    ::testing::ValuesIn(std::vector<EnumCase<SpvImageFormat>>{
         CASE(Unknown),
         CASE(Rgba32f),
         CASE(Rgba16f),
@@ -141,25 +138,24 @@ TEST_F(ImageFormatTest, WrongFormat) {
 
 // Test AccessQualifier enums via OpTypeImage.
 using ImageAccessQualifierTest = spvtest::TextToBinaryTestBase<
-    ::testing::TestWithParam<EnumCase<spv::AccessQualifier>>>;
+    ::testing::TestWithParam<EnumCase<SpvAccessQualifier>>>;
 
 TEST_P(ImageAccessQualifierTest, AnyAccessQualifier) {
   const std::string input =
       "%1 = OpTypeImage %2 1D 2 3 0 4 Rgba8 " + GetParam().name() + "\n";
   EXPECT_THAT(CompiledInstructions(input),
-              Eq(MakeInstruction(
-                  spv::Op::OpTypeImage,
-                  {1, 2, (uint32_t)spv::Dim::Dim1D, 2, 3, 0, 4,
-                   (uint32_t)spv::ImageFormat::Rgba8, GetParam().value()})));
+              Eq(MakeInstruction(SpvOpTypeImage,
+                                 {1, 2, SpvDim1D, 2, 3, 0, 4,
+                                  SpvImageFormatRgba8, GetParam().value()})));
   // Check the disassembler as well.
   EXPECT_THAT(EncodeAndDecodeSuccessfully(input), Eq(input));
 }
 
 // clang-format off
-#define CASE(NAME) {spv::AccessQualifier::NAME, #NAME}
+#define CASE(NAME) {SpvAccessQualifier##NAME, #NAME}
 INSTANTIATE_TEST_SUITE_P(
     AccessQualifier, ImageAccessQualifierTest,
-    ::testing::ValuesIn(std::vector<EnumCase<spv::AccessQualifier>>{
+    ::testing::ValuesIn(std::vector<EnumCase<SpvAccessQualifier>>{
       CASE(ReadOnly),
       CASE(WriteOnly),
       CASE(ReadWrite),
@@ -170,22 +166,21 @@ INSTANTIATE_TEST_SUITE_P(
 // Test AccessQualifier enums via OpTypePipe.
 
 using OpTypePipeTest = spvtest::TextToBinaryTestBase<
-    ::testing::TestWithParam<EnumCase<spv::AccessQualifier>>>;
+    ::testing::TestWithParam<EnumCase<SpvAccessQualifier>>>;
 
 TEST_P(OpTypePipeTest, AnyAccessQualifier) {
   const std::string input = "%1 = OpTypePipe " + GetParam().name() + "\n";
-  EXPECT_THAT(
-      CompiledInstructions(input),
-      Eq(MakeInstruction(spv::Op::OpTypePipe, {1, GetParam().value()})));
+  EXPECT_THAT(CompiledInstructions(input),
+              Eq(MakeInstruction(SpvOpTypePipe, {1, GetParam().value()})));
   // Check the disassembler as well.
   EXPECT_THAT(EncodeAndDecodeSuccessfully(input), Eq(input));
 }
 
 // clang-format off
-#define CASE(NAME) {spv::AccessQualifier::NAME, #NAME}
+#define CASE(NAME) {SpvAccessQualifier##NAME, #NAME}
 INSTANTIATE_TEST_SUITE_P(
     TextToBinaryTypePipe, OpTypePipeTest,
-    ::testing::ValuesIn(std::vector<EnumCase<spv::AccessQualifier>>{
+    ::testing::ValuesIn(std::vector<EnumCase<SpvAccessQualifier>>{
                             CASE(ReadOnly),
                             CASE(WriteOnly),
                             CASE(ReadWrite),
@@ -200,12 +195,12 @@ TEST_F(OpTypePipeTest, WrongAccessQualifier) {
 
 using OpTypeForwardPointerTest = spvtest::TextToBinaryTest;
 
-#define CASE(storage_class)                                                    \
-  do {                                                                         \
-    EXPECT_THAT(                                                               \
-        CompiledInstructions("OpTypeForwardPointer %pt " #storage_class),      \
-        Eq(MakeInstruction(spv::Op::OpTypeForwardPointer,                      \
-                           {1, (uint32_t)spv::StorageClass::storage_class}))); \
+#define CASE(storage_class)                                               \
+  do {                                                                    \
+    EXPECT_THAT(                                                          \
+        CompiledInstructions("OpTypeForwardPointer %pt " #storage_class), \
+        Eq(MakeInstruction(SpvOpTypeForwardPointer,                       \
+                           {1, SpvStorageClass##storage_class})));        \
   } while (0)
 
 TEST_F(OpTypeForwardPointerTest, ValidStorageClass) {
@@ -222,7 +217,6 @@ TEST_F(OpTypeForwardPointerTest, ValidStorageClass) {
   CASE(AtomicCounter);
   CASE(Image);
   CASE(StorageBuffer);
-  CASE(TileImageEXT);
 }
 
 #undef CASE
@@ -251,7 +245,7 @@ using OpSizeOfTest = spvtest::TextToBinaryTest;
 TEST_F(OpSizeOfTest, OpcodeAssemblesInV10) {
   EXPECT_THAT(
       CompiledInstructions("%1 = OpSizeOf %2 %3", SPV_ENV_UNIVERSAL_1_0),
-      Eq(MakeInstruction(spv::Op::OpSizeOf, {1, 2, 3})));
+      Eq(MakeInstruction(SpvOpSizeOf, {1, 2, 3})));
 }
 
 TEST_F(OpSizeOfTest, ArgumentCount) {
@@ -264,7 +258,7 @@ TEST_F(OpSizeOfTest, ArgumentCount) {
                  "next instruction instead."));
   EXPECT_THAT(
       CompiledInstructions("%1 = OpSizeOf %2 %3", SPV_ENV_UNIVERSAL_1_1),
-      Eq(MakeInstruction(spv::Op::OpSizeOf, {1, 2, 3})));
+      Eq(MakeInstruction(SpvOpSizeOf, {1, 2, 3})));
   EXPECT_THAT(
       CompileFailure("%1 = OpSizeOf %2 %3 44 55 ", SPV_ENV_UNIVERSAL_1_1),
       Eq("Expected <opcode> or <result-id> at the beginning of an instruction, "

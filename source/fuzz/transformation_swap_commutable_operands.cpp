@@ -35,9 +35,9 @@ bool TransformationSwapCommutableOperands::IsApplicable(
       FindInstruction(message_.instruction_descriptor(), ir_context);
   if (instruction == nullptr) return false;
 
-  spv::Op opcode = static_cast<spv::Op>(
+  SpvOp opcode = static_cast<SpvOp>(
       message_.instruction_descriptor().target_instruction_opcode());
-  assert(spv::Op(instruction->opcode()) == opcode &&
+  assert(instruction->opcode() == opcode &&
          "The located instruction must have the same opcode as in the "
          "descriptor.");
   return spvOpcodeIsCommutativeBinaryOperator(opcode);

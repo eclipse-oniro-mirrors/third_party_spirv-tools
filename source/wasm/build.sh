@@ -16,11 +16,6 @@
 
 set -e
 
-# This is required to run any git command in the docker since owner will
-# have changed between the clone environment, and the docker container.
-# Marking the root of the repo as safe for ownership changes.
-git config --global --add safe.directory /app
-
 NUM_CORES=$(nproc)
 echo "Detected $NUM_CORES cores for building"
 
@@ -45,7 +40,7 @@ build() {
     emcc \
         --bind \
         -I../../include \
-        -std=c++17 \
+        -std=c++11 \
         ../../source/wasm/spirv-tools.cpp \
         source/libSPIRV-Tools.a \
         -o spirv-tools.js \
