@@ -26,7 +26,6 @@ import("//build/ohos.gni")
 import("//third_party/vk-gl-cts/vk_gl_cts.gni")
 if (build_with_chromium) {
   import("//testing/test.gni")
-  import("//third_party/protobuf/proto_library.gni")
 }
 
 # SPIRV-Tools may be part of multiple projects in the Chromium tree.
@@ -850,10 +849,10 @@ if (build_with_chromium && spvtools_build_executables) {
     deps = [
       ":libdeqp_spirvtools",
       ":spvtools_fuzz_proto",
-      "//third_party/protobuf:protobuf_full",
       "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
       "//third_party/spirv-tools/source/reduce:libdeqp_spirvtools-reduce",
     ]
+    external_deps = [ "protobuf:protobuf_full" ]
     public_deps = [ ":spvtools_headers" ]
     configs -= [ "//build/config/compiler:chromium_code" ]
     configs += [ "//build/config/compiler:no_chromium_code" ]
@@ -962,11 +961,11 @@ if (!is_ios && !spirv_is_winuwp && build_with_chromium &&
       ":spvtools_fuzz",
       ":spvtools_software_version",
       ":spvtools_tools_util",
-      "//third_party/protobuf:protobuf_full",
       "//third_party/spirv-tools/source/opt:libdeqp_spirvtools-opt",
       "//third_party/spirv-tools/source/reduce:libdeqp_spirvtools-reduce",
       "//third_party/spirv-tools/source/val:libdeqp_spirvtools-val",
     ]
+    external_deps = [ "protobuf:protobuf_full" ]
     configs += [ ":spvtools_internal_config" ]
   }
 }
